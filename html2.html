@@ -33,6 +33,32 @@
 				<div id='mapa'></div>
 				<p id='ver_alojamientos'>Ver Alojamientos en Madrid</p>
 				<div id='lista_alojamientos'></div>
+				<div id='buscar_alojamiento'>
+					<fieldset class='busqueda_alojamiento'>
+						<legend>Formulario de Búsqueda</legend>
+						<ul>
+							<li>
+								<label for='name'>
+									Nombre Alojamiento: 
+								</label>
+								<input type='text' placeholder='p.ej: Vincci The Mint'>
+							</li>
+							<li id='seleccion_categoria'>
+								<label for='category'>
+									Categoría:
+									<select name='category' onchange='expandir_formulario()'>
+										<option value='1' selected="selected">Hoteles</option>
+										<option value='2'>Hostales</option>
+										<option value='3'>Apartahoteles</option>
+										<option value='4'>Residencias Universitarias</option>
+										<option value='5'>Camping</option>
+										<option value='6'>Albergues</option>
+										<option value='7'>Pensiones</option>
+								</label>
+							</li>
+						</ul>
+					</fieldset>
+				</div>
 			</div>
 
 			<div id='colecciones'>

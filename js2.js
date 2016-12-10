@@ -56,7 +56,79 @@ var leer_alojamientos = function () {
 var cerrar_alojamiento = function () {
 	$('#descripcion').remove();
 	$('#lista_alojamientos').css({'display':'block'});
+	mapa.setView([40.415556, -3.707222],10);
+	mapa.closePopup();
+	mapa.removeLayer(L.marker);
 }
+
+// var crear_coleccion = function () {
+// 	$('')
+// }
+var buscar_alojamiento = function () {
+
+}
+
+var expandir_formulario = function() {
+	$("select[name=category]").change(function(){
+   		valor = $('select[name=category]').val();
+    	console.log(valor);
+    	if (valor === '1') {
+    		$('#seleccion_subcategoria').remove();
+	    	console.log('Está buscando hoteles');
+    		// buscar_hoteles();
+    		if($('#seleccion_subcategoria').length > 0) {
+    			console.log('el elemento ya existe');
+    		}else {
+    			$('#seleccion_categoria').after('<li id="seleccion_subcategoria"></li>');
+				$('#seleccion_subcategoria').append('<fieldset id="seleccionar_subcategoria"><legend>Subcategoría</legend></fieldset>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hoteles" value="1">1 Estrella</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hoteles" value="2">2 Estrellas</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hoteles" value="3">3 Estrellas</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hoteles" value="4">4 Estrellas</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hoteles" value="5">5 Estrellas</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hoteles" value="6">5 Estrellas Gran Lujo</label>');
+			}
+		}
+		else if (valor === '2') {
+	    	console.log('Está buscando hostales');
+	    	$('#seleccion_subcategoria').remove();
+    		if($('#seleccion_subcategoria').length > 0) {
+    			console.log('el elemento ya existe');
+    		}else {
+    			$('#seleccion_categoria').after('<li id="seleccion_subcategoria"></li>');
+    			$('#seleccion_subcategoria').append('<fieldset id="seleccionar_subcategoria"><legend>Subcategoría</legend></fieldset>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hostales" value="1">1 Estrella</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hostales" value="2">2 Estrellas</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hostales" value="3">3 Estrellas</label>');
+			}
+		}
+		else if (valor === '3') {
+	    	console.log('Está buscando hostales');
+	    	$('#seleccion_subcategoria').remove();
+    		if($('#seleccion_subcategoria').length > 0) {
+    			console.log('el elemento ya existe');
+    		}else {
+    			$('#seleccion_categoria').after('<li id="seleccion_subcategoria"></li>');
+    			$('#seleccion_subcategoria').append('<fieldset id="seleccionar_subcategoria"><legend>Subcategoría</legend></fieldset>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="llaves" value="1">1 Llave</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="llaves" value="2">2 Llaves</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="llaves" value="3">3 Llaves</label>');
+				$('#seleccionar_subcategoria').append('<label><input type="radio" name="llaves" value="4">4 Llaves</label>');
+			}
+		}
+		
+
+    });
+}
+
+/*var buscar_hoteles = function() {
+	$('#seleccion_categoria').after('<li id="seleccion_subcategoria"></li>');
+	$('#seleccion_subcategoria').append('<label for="subcategory">Subcategoría: </label>');
+}
+*/
+
+
+
 
 $(document).ready(function() {
 	$('#tabs').tabs();
@@ -72,4 +144,5 @@ $(document).ready(function() {
 
 	/*Leemos todos los alojamientos llamando a la función "leer_alojamientos"*/
 	$('#ver_alojamientos').click(leer_alojamientos);
+	$('a.leaflet-popup-close.button').on('click','cerrar_alojamiento()');
 });

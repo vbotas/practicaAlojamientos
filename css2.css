@@ -6,7 +6,31 @@
 	border-radius: 15px;
 }
 
+#lista_alojamientos ol {
+	width: 200px;
+	height: 100px;
+	overflow-y: auto;
+}
+
 a:visited {
 	text-decoration:none;
 	color:#ffcc33;
 } 
+.busqueda_alojamiento {
+	width: 350px;
+}
+.busqueda_alojamiento ul {
+	list-style: none;
+	width: 350px;
+	margin: 0;
+	padding: 2px;
+}
+
+.busqueda_alojamiento ul li {
+	padding: 8px;
+	position: relative;
+}
+
+input {
+	display: block;
+}
