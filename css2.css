@@ -8,7 +8,7 @@
 
 #lista_alojamientos ol {
 	width: 200px;
-	height: 100px;
+	height: 200px;
 	overflow-y: auto;
 }
 
@@ -21,7 +21,7 @@ a:visited {
 }
 .busqueda_alojamiento ul {
 	list-style: none;
-	width: 350px;
+	width: 420px;
 	margin: 0;
 	padding: 2px;
 }
@@ -32,5 +32,9 @@ a:visited {
 }
 
 input {
-	display: block;
+	display: inline;
+}
+
+#botonReset {
+	display:inline;
 }

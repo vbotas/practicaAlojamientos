@@ -87,6 +87,8 @@ var expandir_formulario = function() {
 				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hoteles" value="4">4 Estrellas</label>');
 				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hoteles" value="5">5 Estrellas</label>');
 				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hoteles" value="6">5 Estrellas Gran Lujo</label>');
+				$('#seleccionar_subcategoria').after('<input id="botonBuscar" type="submit" value="Buscar"  onclick="leer_formulario()" />');
+				$('#botonBuscar').after('<input id="botonReset" type="reset" value="Vaciar Formulario" />');
 			}
 		}
 		else if (valor === '2') {
@@ -100,6 +102,8 @@ var expandir_formulario = function() {
 				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hostales" value="1">1 Estrella</label>');
 				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hostales" value="2">2 Estrellas</label>');
 				$('#seleccionar_subcategoria').append('<label><input type="radio" name="estrellas_hostales" value="3">3 Estrellas</label>');
+				$('#seleccionar_subcategoria').after('<input id="botonBuscar" type="submit" value="Buscar" onclick="leer_formulario()" />');
+				$('#botonBuscar').after('<input id="botonReset" type="reset" value="Vaciar Formulario" />');
 			}
 		}
 		else if (valor === '3') {
@@ -114,21 +118,49 @@ var expandir_formulario = function() {
 				$('#seleccionar_subcategoria').append('<label><input type="radio" name="llaves" value="2">2 Llaves</label>');
 				$('#seleccionar_subcategoria').append('<label><input type="radio" name="llaves" value="3">3 Llaves</label>');
 				$('#seleccionar_subcategoria').append('<label><input type="radio" name="llaves" value="4">4 Llaves</label>');
+				$('#seleccionar_subcategoria').after('<input id="botonBuscar" type="submit" value="Buscar" onclick="leer_formulario()" />');
+				$('#botonBuscar').after('<input id="botonReset" type="reset" value="Vaciar Formulario" />');
+			}
+		}
+		else {
+			$('#seleccion_subcategoria').remove();
+    		if($('#seleccion_subcategoria').length > 0) {
+    			console.log('el elemento ya existe');
+    		}else {
+    			if ($('#botonBuscar').length > 0) {
+    				console.log('Ya existe el boton');
+    			}
+    			else {
+    				$('#seleccion_categoria').after('<input id="botonBuscar" type="submit" value="Buscar" onclick="leer_formulario()" />');	
+    				$('#botonBuscar').after('<input id="botonReset" type="reset" value="Vaciar Formulario" />');
+    			}			
 			}
 		}
 		
 
     });
 }
-
-/*var buscar_hoteles = function() {
-	$('#seleccion_categoria').after('<li id="seleccion_subcategoria"></li>');
-	$('#seleccion_subcategoria').append('<label for="subcategory">Subcategoría: </label>');
+//Función para leer los datos que se han marcado en el formulario y poder buscar los hoteles.
+var leer_formulario = function() {
+	console.log('clickado para buscar');
+	valor_categoria = $('select[name=category]').val();
+	console.log('El valor de la Categoría es: '+valor_categoria);
+	if (valor_categoria === '1') {
+		valor_subcategoria = $('input:radio[name=estrellas_hoteles]:checked').val();
+		$("#seleccionar_subcategoria").submit();
+		console.log('El valor de la Subcategoría es: '+valor_subcategoria);
+	}
+	else if(valor_categoria === '2') {
+		valor_subcategoria = $('input:radio[name=estrellas_hostales]:checked').val();
+		$("#seleccionar_subcategoria").submit();
+		console.log('El valor de la Subcategoría es: '+valor_subcategoria);
+	}
+	else if(valor_categoria === '3') {
+		valor_subcategoria = $('input:radio[name=llaves]:checked').val();
+		$('#seleccionar_subcategoria').submit();
+		console.log('El valor de la Subcategoría es: '+valor_subcategoria);
+	}
 }
-*/
-
-
-
 
 $(document).ready(function() {
 	$('#tabs').tabs();
