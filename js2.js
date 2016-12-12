@@ -30,7 +30,7 @@ var mostrar_alojamientos = function () {
 
 var leer_alojamientos = function () {
 
-	$.getJSON('alojamientos.json', function (datos_alojamientos) {
+	$.getJSON('alojamientos2.json', function (datos_alojamientos) {
 		$('#ver_alojamientos').html('');
 		alojamientos = datos_alojamientos.serviceList.service;
 		//$('#lista_alojamientos').after('<h1>' + alojamientos.length + '</h1>');
@@ -45,10 +45,7 @@ var leer_alojamientos = function () {
 		lista = lista + '</ol>';
 		console.log(lista);
 		$('#lista_alojamientos').html(lista);
-		/*$('ol li').click(function(){
-			console.log('hola');
-		})
-		console.log('DOCUMENTO LEIDO!!!!!!');*/
+		
 		$('ol li').click(mostrar_alojamientos);
 	})
 };
@@ -65,32 +62,40 @@ var cerrar_alojamiento = function () {
 // 	$('')
 // }
 var buscar_alojamiento = function () {
+
+
 	console.log('clickado para buscar');
 	nombre_buscado = $('#nombre_alojamiento').val();
 	valor_categoria = $('select[name=category]').val();
+	array_busqueda = [];
+	array_busqueda.push(nombre_buscado);
+	array_busqueda.push(valor_categoria);
+	//Dependiendo del alojamiento buscado, tendrá o no "subcategoría",aquí se diferencia cada caso, añadiéndolo o no al array_busqueda.
 	if (valor_categoria === '1') {
 		valor_subcategoria = $('input:radio[name=estrellas_hoteles]:checked').val();
 		$("#seleccionar_subcategoria").submit();
+		array_busqueda.push(valor_subcategoria);	
 	}
 	else if(valor_categoria === '2') {
 		valor_subcategoria = $('input:radio[name=estrellas_hostales]:checked').val();
 		$("#seleccionar_subcategoria").submit();
+		array_busqueda.push(valor_subcategoria);
 	}
 	else if(valor_categoria === '3') {
 		valor_subcategoria = $('input:radio[name=llaves]:checked').val();
 		$('#seleccionar_subcategoria').submit();
+		array_busqueda.push(valor_subcategoria);
 	}
-	array_busqueda = [];
-	array_busqueda.push(nombre_buscado);
-	array_busqueda.push(valor_categoria);
-	array_busqueda.push(valor_subcategoria);
 	console.log(array_busqueda);
-	$.getJSON('alojamientos.json', function (datos_alojamientos) {
+
+
+	$.getJSON('alojamientos2.json', function (datos_alojamientos) {
+
 		console.log('empieza a leer');
 		alojamientos = datos_alojamientos.serviceList.service;
 		console.log('hay '+alojamientos.length+' alojamientos leidos');
 		$('#buscar_alojamiento').after('<div id="resultado_busqueda"></div>');
-		var lista_alojamientos_encontrados = '<p>Resultados de la Búsqueda<p><ol>'
+		var lista_alojamientos_encontrados = '<p id="cabecera_busqueda">Resultados de la Búsqueda<p><ol>'
 		for (var j=0; j < alojamientos.length; j++) {
 			nombre_leido = alojamientos[j].basicData.name;
 			categoria_leida = alojamientos[j].extradata.categorias.categoria.item[1]['#text'];
@@ -101,8 +106,10 @@ var buscar_alojamiento = function () {
 			alojamiento_leido.push(categoria_leida);
 			//alojamiento_leido.push(subcategoria_leida);
 			//console.log(alojamiento_leido);
-
 			if (nombre_buscado === '') {
+				
+				
+				
 				switch (valor_categoria) {
 					case '1':
 						if (categoria_leida === 'Hoteles'){
@@ -111,41 +118,40 @@ var buscar_alojamiento = function () {
 							switch (valor_subcategoria) {
 								case '1':
 									if(subcategoria_leida === '1 estrella') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '2':
 									if(subcategoria_leida === '2 estrellas') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '3':
 									if(subcategoria_leida === '3 estrellas') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '4':
 									if(subcategoria_leida === '4 estrellas') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '5':
 									if(subcategoria_leida === '5 estrellas') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '6':
 									if(subcategoria_leida === '5 estrellas Gran Lujo') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 							}
 							//lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
 						}
 						break;
-					case '2':
-						if (categoria_leida === 'Hostales') {
-							$('#resultado_busqueda').empty();
+					case '2'://FALLA PORQUE HAY ALGUNOS QUE NO TIENEN SUBCATEGORIA Y NO ME FUNCIONA LA COMPROBACIÓN DEL "TYPEOF"
+						if (categoria_leida ==='Hostales') {
 							subcategoria_leida = alojamientos[j].extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text'];
 							switch (valor_subcategoria) {
 								case '1':
@@ -164,7 +170,9 @@ var buscar_alojamiento = function () {
 									}
 									break;
 							}
+							break;
 						}
+						break;
 					case '3':
 						if (categoria_leida === 'Apartahoteles') {
 							$('#resultado_busqueda').empty();
@@ -191,7 +199,9 @@ var buscar_alojamiento = function () {
 									}
 									break;
 							}
+
 						}
+						break;
 					case '4':
 						if (categoria_leida === 'Residencias universitarias') {
 							$('#resultado_busqueda').empty();
@@ -229,14 +239,19 @@ var buscar_alojamiento = function () {
 		lista_alojamientos_encontrados = lista_alojamientos_encontrados + '</ol>';
 		$('#resultado_busqueda').text('');
 		$('#resultado_busqueda').html(lista_alojamientos_encontrados);
+		$('ol li').click(mostrar_alojamientos);
 	})
 
 }
 
 var expandir_formulario = function() {
-	if ($('#resultado_busqueda').length > 0) {
-		$('#resultado_busqueda').remove();
+	if ($('#cabecera_busqueda').length>0){
+		$('#cabecera_busqueda').remove();
 	}
+	if ($('div#resultado_busqueda').length>0){
+		$('div#resultado_busqueda').remove();
+	}
+	
 	$("select[name=category]").change(function(){
    		valor = $('select[name=category]').val();
     	console.log(valor);
@@ -275,7 +290,7 @@ var expandir_formulario = function() {
 			}
 		}
 		else if (valor === '3') {
-	    	console.log('Está buscando hostales');
+	    	console.log('Está buscando apartahoteles');
 	    	$('#seleccion_subcategoria').remove();
     		if($('#seleccion_subcategoria').length > 0) {
     			console.log('el elemento ya existe');
@@ -334,11 +349,17 @@ var leer_formulario = function() {
 var borrar_formulario = function() {
 	$('#seleccion_subcategoria').remove();
 	$('#nombre_alojamiento').val('');
+	if ($('#cabecera_busqueda').length>0){
+		$('#cabecera_busqueda').remove();
+	}
+	if ($('div#resultado_busqueda').length>0){
+		$('div#resultado_busqueda').remove();
+	}
 }
 
 $(document).ready(function() {
 	$('#tabs').tabs();
-
+	p=0;
 	/*Inicializamos el mapa*/
 	mapa = L.map('mapa');
 	mapa.setView([40.415556, -3.707222],10);
