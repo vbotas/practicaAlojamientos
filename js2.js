@@ -371,5 +371,5 @@ $(document).ready(function() {
 
 	/*Leemos todos los alojamientos llamando a la función "leer_alojamientos"*/
 	$('#ver_alojamientos').click(leer_alojamientos);
-	$('a.leaflet-popup-close.button').on('click','cerrar_alojamiento()');
+	//$('a.leaflet-popup-close.button').on('click','cerrar_alojamiento()');
 });
