@@ -11,6 +11,8 @@ var mostrar_alojamientos = function () {
 	var imagen = alojamiento.multimedia.media[0].url;
 	var categoria = alojamiento.extradata.categorias.categoria.item[1]['#text'];
 	var subcategoria = alojamiento.extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text'];
+	var id_alojamiento = alojamiento['@id'];
+	console.log(id_alojamiento)
 
 	L.marker([latitud,longitud]).addTo(mapa)
 		.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />')
@@ -25,6 +27,12 @@ var mostrar_alojamientos = function () {
 			 	'id': 'cerrar',
 			 	html: 'Cerrar',
 			 	'onclick': 'cerrar_alojamiento()'
+	}).appendTo('#descripcion');
+	$('<button>', {
+			 	'type': 'button',
+			 	'id': 'coleccion',
+			 	html: 'Añadir Colección',
+			 	'onclick': 'crear_coleccion('+id_alojamiento+')'
 	}).appendTo('#descripcion');
 }
 
@@ -58,9 +66,13 @@ var cerrar_alojamiento = function () {
 	mapa.removeLayer(L.marker);
 }
 
-// var crear_coleccion = function () {
-// 	$('')
-// }
+var crear_coleccion = function (id_alojamiento_recibido) {
+	console.log('Añadido a colección');
+	var id = id_alojamiento_recibido;
+	console.log('El id del alojamiento es: ' + id);
+	coleccion_alojamientos_vistos.push(id);
+	console.log(coleccion_alojamientos_vistos);
+}
 var buscar_alojamiento = function () {
 
 
@@ -360,6 +372,9 @@ var borrar_formulario = function() {
 $(document).ready(function() {
 	$('#tabs').tabs();
 	p=0;
+	coleccion_alojamientos_vistos = [];
+	
+
 	/*Inicializamos el mapa*/
 	mapa = L.map('mapa');
 	mapa.setView([40.415556, -3.707222],10);
@@ -371,5 +386,27 @@ $(document).ready(function() {
 
 	/*Leemos todos los alojamientos llamando a la función "leer_alojamientos"*/
 	$('#ver_alojamientos').click(leer_alojamientos);
-	//$('a.leaflet-popup-close.button').on('click','cerrar_alojamiento()');
+
+
+	$('#ui-id-1').on('click', function() {
+		/*$('#mapa').css({'display':'none'});
+		$('#ver_alojamientos').css({'display':'none'});
+		$('.busqueda:_alojamiento').css({'display':'none'});*/
+	 	$('#principal').css({'display':'block'});
+	 	$('#colecciones').css({'display':'none'});
+	 	$('#clientes_alojados').css({'display':'none'});
+	});
+
+	$('#ui-id-2').on('click', function() {
+	 	$('#principal').css({'display':'none'});
+	 	$('#colecciones').css({'display':'block'});
+	 	$('#clientes_alojados').css({'display':'none'});
+	});
+
+	$('#ui-id-3').on('click', function() {
+	 	$('#principal').css({'display':'none'});
+	 	$('#colecciones').css({'display':'none'});
+	 	$('#clientes_alojados').css({'display':'block'});
+	});
+
 });
