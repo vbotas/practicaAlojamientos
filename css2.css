@@ -1,3 +1,7 @@
+#tabs {
+	border: 0px;
+}
+
 #mapa {
 	width: 800px;
 	height: 400px;
@@ -6,10 +10,15 @@
 	border-radius: 15px;
 }
 
-#lista_alojamientos ol {
-	width: 200px;
+#lista_alojamientos ol, #lista_alojamientos_totales ol {
+	width: 300px;
 	height: 200px;
 	overflow-y: auto;
+}
+
+#lista_alojamientos_totales, #lista_alojamientos {
+	float: left;
+	margin-right: 25px;
 }
 
 a:visited {
@@ -18,6 +27,9 @@ a:visited {
 } 
 .busqueda_alojamiento {
 	width: 350px;
+	float: left;
+	margin-left: 25px;
+	margin-top: 50px;
 }
 .busqueda_alojamiento ul {
 	list-style: none;
@@ -37,4 +49,27 @@ input {
 
 #botonReset {
 	display:inline;
+}
+ #formulario_coleccion {
+ 	width: 200px;
+ 	float left;
+ 	margin-left: 25px;
+ }
+/*#resultado_busqueda {
+	margin-left: 25px;
+	margin-top: 50px;
+	width: 200px;
+	height: 200px;
+	float:left;
+	border: 2px solid grey;
+}*/
+
+#colecciones_creadas {
+	border:2px solid grey;
+	float: left;
+	padding: 3px;
+	margin: 3px;
+}
+.coleccion {
+	border: 1px solid blue;
 }

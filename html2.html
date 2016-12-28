@@ -63,7 +63,19 @@
 			</div>
 
 			<div id='colecciones'>
-				<p>HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
+				<div id='alojamientos_totales'></div>
+				<div id='lista_alojamientos_totales'></div>
+				<form>
+					<fieldset id='formulario_coleccion'>
+						<legend>Crear Colección</legend>
+						Nombre: 
+						<input type="text" name="nombre_coleccion" placeholder="Escripe el nombre de la colección" />
+						<input type='button' id='crear' value='Crear!' onclick='crear_coleccion()'>
+					</fieldset>
+				</form>
+				<div id='colecciones_creadas'>
+					<p id='cabecera_colecciones'>Colecciones Creadas</p>
+				</div>
 			</div>
 
 			<div id='clientes_alojados'>

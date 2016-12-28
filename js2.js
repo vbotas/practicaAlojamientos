@@ -1,3 +1,50 @@
+var cuadro_alojamientos = function () {
+	$.getJSON('alojamientos2.json', function (datos_alojamientos) {
+		alojamientos = datos_alojamientos.serviceList.service;
+		//$('#lista_alojamientos').after('<h1>' + alojamientos.length + '</h1>');
+		console.log(alojamientos.length);
+
+		var lista2 = 'Alojamientos en Madrid: ';
+		console.log(lista2);
+		lista2 = lista2 + '<ol>'
+		for(var i = 0; i < alojamientos.length; i++) {
+			lista2 = lista2 + '<li numero='+i+'>' + alojamientos[i].basicData.name + '</li>';
+		}
+		lista2 = lista2 + '</ol>';
+		console.log(lista2);
+		$('#lista_alojamientos_totales').html(lista2);
+		
+		$('ol li').click(mostrar_alojamientos);
+		$('#lista_alojamientos_totales ol li').draggable({
+			helper: 'clone'
+		});
+	})
+
+	array_colecciones = [];
+	console.log(array_colecciones);
+
+}
+
+var add_coleccion = function (id_alojamiento_recibido) {
+	console.log('Añadido a colección');
+	var id = id_alojamiento_recibido;
+	console.log('El id del alojamiento es: ' + id);
+	alojamientos_vistos.push(id);
+	console.log(alojamientos_vistos);
+}
+
+var crear_coleccion = function (id_alojamiento_recibido) {
+	nombre_coleccion_nueva = $('input:text[name=nombre_coleccion]').val()
+	$('#colecciones_creadas').append('<p class="coleccion">'+nombre_coleccion_nueva + '</p>');
+	$('.coleccion').droppable({
+			drop: function(evento, ui) {
+				$(this).append("<br >");
+                  //alert("objeto con id="+$('#lista_alojamientos_totales ol li').attr("numero"));
+			}
+		});
+}
+//FUNCIONES PESTAÑA "PRINCIPAL"
+
 var mostrar_alojamientos = function () {
 	var alojamiento = alojamientos[$(this).attr('numero')];
 	/*Cogemos sólo alguno de los datos que están en el json y los almacenamos en variables de nuestra aplicación*/
@@ -32,7 +79,7 @@ var mostrar_alojamientos = function () {
 			 	'type': 'button',
 			 	'id': 'coleccion',
 			 	html: 'Añadir Colección',
-			 	'onclick': 'crear_coleccion('+id_alojamiento+')'
+			 	'onclick': 'add_coleccion('+id_alojamiento+')'
 	}).appendTo('#descripcion');
 }
 
@@ -66,13 +113,6 @@ var cerrar_alojamiento = function () {
 	mapa.removeLayer(L.marker);
 }
 
-var crear_coleccion = function (id_alojamiento_recibido) {
-	console.log('Añadido a colección');
-	var id = id_alojamiento_recibido;
-	console.log('El id del alojamiento es: ' + id);
-	coleccion_alojamientos_vistos.push(id);
-	console.log(coleccion_alojamientos_vistos);
-}
 var buscar_alojamiento = function () {
 
 
@@ -253,7 +293,6 @@ var buscar_alojamiento = function () {
 		$('#resultado_busqueda').html(lista_alojamientos_encontrados);
 		$('ol li').click(mostrar_alojamientos);
 	})
-
 }
 
 var expandir_formulario = function() {
@@ -401,6 +440,7 @@ $(document).ready(function() {
 	 	$('#principal').css({'display':'none'});
 	 	$('#colecciones').css({'display':'block'});
 	 	$('#clientes_alojados').css({'display':'none'});
+	 	cuadro_alojamientos();
 	});
 
 	$('#ui-id-3').on('click', function() {
