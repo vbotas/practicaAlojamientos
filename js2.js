@@ -34,14 +34,26 @@ var add_coleccion = function (id_alojamiento_recibido) {
 }
 
 var crear_coleccion = function (id_alojamiento_recibido) {
+
 	nombre_coleccion_nueva = $('input:text[name=nombre_coleccion]').val()
-	$('#colecciones_creadas').append('<p class="coleccion">'+nombre_coleccion_nueva + '</p>');
-	$('.coleccion').droppable({
+	$('#colecciones_creadas').append('<div class="coleccion" id="coleccion_nueva"><div class="coleccion_nueva" id="coleccion'+j+'"><p id="nombre_coleccion_creada" onclick="desplegar_coleccion('+j+')">'+nombre_coleccion_nueva + '</p></div></div>');
+	j += 1;
+	$('.coleccion_nueva').droppable({
 			drop: function(evento, ui) {
-				$(this).append("<br >");
-                  //alert("objeto con id="+$('#lista_alojamientos_totales ol li').attr("numero"));
+				$(this).append('<p id="alojamiento_coleccion">'+ ui.draggable.text()+'</p>')
+                //alert("objeto con id="+ ui.draggable.text());
 			}
+
 		});
+}
+
+var desplegar_coleccion = function(param) {
+	
+	var id_coleccion = 'coleccion'+param;
+	//alert(id_coleccion);
+	$('#'+id_coleccion+' > #alojamiento_coleccion').slideToggle("slow");
+	//var IDpadre = $(this).parent().attr('id');
+	//alert(IDpadre);
 }
 //FUNCIONES PESTAÑA "PRINCIPAL"
 
@@ -411,6 +423,7 @@ var borrar_formulario = function() {
 $(document).ready(function() {
 	$('#tabs').tabs();
 	p=0;
+	j=0;
 	coleccion_alojamientos_vistos = [];
 	
 
@@ -441,12 +454,18 @@ $(document).ready(function() {
 	 	$('#colecciones').css({'display':'block'});
 	 	$('#clientes_alojados').css({'display':'none'});
 	 	cuadro_alojamientos();
+
 	});
 
 	$('#ui-id-3').on('click', function() {
 	 	$('#principal').css({'display':'none'});
 	 	$('#colecciones').css({'display':'none'});
 	 	$('#clientes_alojados').css({'display':'block'});
+
 	});
+	
+	$('p#nombre_coleccion_creada').on('click', function() {
+		alert('hola');
+	})
 
 });

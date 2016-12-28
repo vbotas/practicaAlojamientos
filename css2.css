@@ -73,3 +73,19 @@ input {
 .coleccion {
 	border: 1px solid blue;
 }
+
+#nombre_coleccion_creada {
+	font-style: italic;
+	font-weight: bold;
+	font-color: #ffffff;
+	font-family: 'Helvetica', 'Verdana', 'Monaco', sans-serif;
+}
+
+#alojamiento_coleccion {
+	padding-right: 5px;
+	padding-left: 2px;
+}
+
+.coleccion {
+	margin-top: 2px;
+}
