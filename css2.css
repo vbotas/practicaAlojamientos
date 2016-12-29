@@ -10,6 +10,15 @@
 	border-radius: 15px;
 }
 
+#mapa_coleccion {
+	float: right;
+	width:600px;
+	height: 300px;
+	margin:0;
+	border:3px solid grey;
+	border-radius: 15px;
+}
+
 #lista_alojamientos ol, #lista_alojamientos_totales ol {
 	width: 300px;
 	height: 200px;
@@ -89,3 +98,4 @@ input {
 .coleccion {
 	margin-top: 2px;
 }
+

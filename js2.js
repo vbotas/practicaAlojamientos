@@ -1,3 +1,6 @@
+//FUNCIONES PESTAÑA "COLECCIONES"
+
+
 var cuadro_alojamientos = function () {
 	$.getJSON('alojamientos2.json', function (datos_alojamientos) {
 		alojamientos = datos_alojamientos.serviceList.service;
@@ -40,11 +43,11 @@ var crear_coleccion = function (id_alojamiento_recibido) {
 	j += 1;
 	$('.coleccion_nueva').droppable({
 			drop: function(evento, ui) {
-				$(this).append('<p id="alojamiento_coleccion">'+ ui.draggable.text()+'</p>')
+				$(this).append('<p id="alojamiento_coleccion" onclick="mostrar_mapa_coleccion('+ui.draggable.attr('numero')+','+j+')">'+ ui.draggable.text()+'</p>');
+
                 //alert("objeto con id="+ ui.draggable.text());
 			}
-
-		});
+	});	
 }
 
 var desplegar_coleccion = function(param) {
@@ -54,7 +57,88 @@ var desplegar_coleccion = function(param) {
 	$('#'+id_coleccion+' > #alojamiento_coleccion').slideToggle("slow");
 	//var IDpadre = $(this).parent().attr('id');
 	//alert(IDpadre);
+	seleccionar_coleccion(id_coleccion)
 }
+
+var seleccionar_coleccion = function(identificador_coleccion){
+	//alert(identificador_coleccion);
+	
+}
+
+var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
+	//alert(numero_alojamiento);
+	var col = numero_coleccion - 1;
+	var id_col = 'coleccion'+col;
+	var nombre_coleccion = $('#'+id_col+' > #nombre_coleccion_creada').text();
+	//console.log(nombre_coleccion);
+	var alojamiento = alojamientos[numero_alojamiento];
+	/*Cogemos sólo alguno de los datos que están en el json y los almacenamos en variables de nuestra aplicación*/
+	var latitud = alojamiento.geoData.latitude;
+	var longitud = alojamiento.geoData.longitude;
+	var direccion = alojamiento.geoData.address;
+	var descripcion = alojamiento.basicData.body;
+	var url_web = alojamiento.basicData.web;
+	var telefono = alojamiento.basicData.phone;
+	var nombre = alojamiento.basicData.name;
+	var imagen = alojamiento.multimedia.media[0].url;
+	var categoria = alojamiento.extradata.categorias.categoria.item[1]['#text'];
+	var subcategoria = alojamiento.extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text'];
+	var id_alojamiento = alojamiento['@id'];
+	console.log(id_alojamiento)
+
+	L.marker([latitud,longitud]).addTo(mapa)
+		.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />')
+		.openPopup();
+
+	mapa.setView([latitud, longitud], 16);
+	$('#mapa').after('<div id="descripcion"></div>');
+	$('#descripcion').html('<h2>'+nombre+'</h2>' + '<p>Descripción: '+descripcion+'</p><p>Categoria: ' + categoria + '</p><p>Subcategoría: '+subcategoria+'</p><img src="'+imagen+'" style="display:block;border:2px solid grey;border-radius:15px">');
+	$('#lista_alojamientos').css({'display':'none'});
+	$('<button>', {
+			 	'type': 'button',
+			 	'id': 'cerrar',
+			 	html: 'Cerrar',
+			 	'onclick': 'cerrar_alojamiento()'
+	}).appendTo('#descripcion');
+	$('<button>', {
+			 	'type': 'button',
+			 	'id': 'coleccion',
+			 	html: 'Añadir Colección',
+			 	'onclick': 'add_coleccion('+id_alojamiento+')'
+	}).appendTo('#descripcion');
+
+	if($('#mapa_coleccion').length >0) {
+		L.marker([latitud,longitud]).addTo(mapa_coleccion)
+		.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />')
+		.openPopup();
+		mapa_coleccion.setView([latitud, longitud], 16);
+	}
+	else {
+		$('#colecciones_creadas').after('<div id="mapa_coleccion"></div>');
+		//$('#mapa_coleccion').after('<p>Más Información en la pestaña "PRINCIPAL"</p>');
+		mapa_coleccion = L.map('mapa_coleccion');
+		mapa_coleccion.setView([40.415556, -3.707222],10);
+
+		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+	 		maxZoom: 20
+		}).addTo(mapa_coleccion);
+		L.marker([latitud,longitud]).addTo(mapa_coleccion)
+			.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />Coleccion: '+nombre_coleccion)
+			.openPopup();
+
+		mapa_coleccion.setView([latitud, longitud], 16);
+	}	
+}
+
+
+
+
+
+
+
+
+
 //FUNCIONES PESTAÑA "PRINCIPAL"
 
 var mostrar_alojamientos = function () {
@@ -424,6 +508,7 @@ $(document).ready(function() {
 	$('#tabs').tabs();
 	p=0;
 	j=0;
+	
 	coleccion_alojamientos_vistos = [];
 	
 
