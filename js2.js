@@ -1,5 +1,57 @@
 //FUNCIONES PESTAÑA "GESTION DE ALOJADOS"
+var mostrar_alojamiento_seleccionado = function (latitud_selecc, longitud_selecc, direccion_selecc, descripcion_selecc, url_web_selecc, nombre_selecc, imagen_selecc, categoria_selecc, subcategoria_selecc, id_alojamiento_selecc) {
+	console.log('Aquí se mostrará la descripción del hotel seleccionado en la pestaña principal.');
+	if($('#mapa_clientes_alojados').length > 0) {
+		if ($('#descripcion_selecc').length > 0 ){
+			$('#descripcion_selecc').html('');
+			$('#mapa_clientes_alojados').after('<div id="descripcion_selecc"></div>');
+			$('#descripcion_selecc').html('<h2>'+nombre_selecc+'</h2>' + '<p>Descripción: '+descripcion_selecc+'</p><p>Categoria: ' + categoria_selecc + '</p><p>Subcategoría: '+subcategoria_selecc+'</p><img src="'+imagen_selecc+'" style="display:block;border:2px solid grey;border-radius:15px">');
+			L.marker([latitud_selecc,longitud_selecc]).addTo(mapa_clientes_alojados)
+				.bindPopup('<a href="'+url_web_selecc+'">' + nombre_selecc + '</a><br />')
+				.openPopup();
 
+			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);
+		}
+		else {
+			$('#mapa_clientes_alojados').after('<div id="descripcion_selecc"></div>');
+			$('#descripcion_selecc').html('<h2>'+nombre_selecc+'</h2>' + '<p>Descripción: '+descripcion_selecc+'</p><p>Categoria: ' + categoria_selecc + '</p><p>Subcategoría: '+subcategoria_selecc+'</p><img src="'+imagen_selecc+'" style="display:block;border:2px solid grey;border-radius:15px">');
+			L.marker([latitud_selecc,longitud_selecc]).addTo(mapa_clientes_alojados)
+				.bindPopup('<a href="'+url_web_selecc+'">' + nombre_selecc + '</a><br />')
+				.openPopup();
+
+			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);		
+		}
+
+	}
+	else {
+		$('#clientes_alojados').append('<div id="mapa_clientes_alojados"></div>');
+		mapa_clientes_alojados = L.map('mapa_clientes_alojados');
+		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+	 		maxZoom: 20
+		}).addTo(mapa_clientes_alojados);
+		if ($('#descripcion_selecc').length > 0 ){
+			$('#descripcion_selecc').remove();
+			$('#mapa_clientes_alojados').after('<div id="descripcion_selecc"></div>');
+			$('#descripcion_selecc').html('<h2>'+nombre_selecc+'</h2>' + '<p>Descripción: '+descripcion_selecc+'</p><p>Categoria: ' + categoria_selecc + '</p><p>Subcategoría: '+subcategoria_selecc+'</p><img src="'+imagen_selecc+'" style="display:block;border:2px solid grey;border-radius:15px">');
+			L.marker([latitud_selecc,longitud_selecc]).addTo(mapa_clientes_alojados)
+				.bindPopup('<a href="'+url_web_selecc+'">' + nombre_selecc + '</a><br />')
+				.openPopup();
+
+			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);		
+		}
+		else {
+			$('#mapa_clientes_alojados').after('<div id="descripcion_selecc"></div>');
+			$('#descripcion_selecc').html('<h2>'+nombre_selecc+'</h2>' + '<p>Descripción: '+descripcion_selecc+'</p><p>Categoria: ' + categoria_selecc + '</p><p>Subcategoría: '+subcategoria_selecc+'</p><img src="'+imagen_selecc+'" style="display:block;border:2px solid grey;border-radius:15px">');
+			L.marker([latitud_selecc,longitud_selecc]).addTo(mapa_clientes_alojados)
+				.bindPopup('<a href="'+url_web_selecc+'">' + nombre_selecc + '</a><br />')
+				.openPopup();
+
+			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);		
+		}	
+	}
+	$('#descripcion_selecc').after('<div id="google+_clientes"></div>');
+}
 
 
 
@@ -267,7 +319,7 @@ var mostrar_alojamientos = function () {
 		}).appendTo('#descripcion');
 		$('button#coleccion').css({'display':'none'});
 	}
-	
+	mostrar_alojamiento_seleccionado(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento);
 }
 
 var leer_alojamientos = function () {

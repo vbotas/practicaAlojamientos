@@ -24,7 +24,7 @@ body {
     box-shadow: 0 10px 6px -6px #777;
 }
 
-#mapa {
+#mapa, #mapa_clientes_alojados {
 	width: 800px;
 	height: 400px;
 	margin: 0 auto;
