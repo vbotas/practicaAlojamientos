@@ -124,3 +124,11 @@ input {
 	margin-top: 2px;
 }
 
+#coleccion_seleccionada {
+	border: 2px solid yellow;
+	font-style: italic;
+	font-weight: bold;
+	font-color: #ffffff;
+	font-family: 'Helvetica', 'Verdana', 'Monaco', sans-serif;
+	float: right;
+}

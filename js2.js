@@ -117,6 +117,19 @@ var desplegar_coleccion = function(param) {
 var seleccionar_coleccion = function(identificador_coleccion){
 	//alert(identificador_coleccion);
 	console.log(identificador_coleccion + ' seleccionada.');
+	if( $('.coleccion_seleccionada').length > 0 )  {
+		$('#nombre_coleccion_creada').removeClass('coleccion_seleccionada');
+	}
+	$('#'+identificador_coleccion+' #nombre_coleccion_creada').addClass('coleccion_seleccionada');
+	var nombre_coleccion_seleccionada = $('.coleccion_seleccionada').text();
+	if( $('#coleccion_seleccionada').length > 0 )  {
+		$('#coleccion_seleccionada').append('<p>'+($('#nombre_coleccion_creada').siblings('#alojamiento_coleccion')).text()+'<br /></p>');
+	}
+	else {
+		$('#mapa').after('<div id="coleccion_seleccionada">Colección Seleccionada: <br />'+nombre_coleccion_seleccionada+'<div>');
+		$('#coleccion_seleccionada').append('<p>'+($('#nombre_coleccion_creada').siblings('#alojamiento_coleccion')).text()+'<br /></p>');
+		//CORREGIR PORQUE ALGO FALLA A LA HORA DE AÑADIR LOS HOTELES AL DIV
+	}
 }
 
 var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
