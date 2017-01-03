@@ -50,9 +50,38 @@ var mostrar_alojamiento_seleccionado = function (latitud_selecc, longitud_selecc
 			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);		
 		}	
 	}
-	$('#descripcion_selecc').after('<div id="google+_clientes"></div>');
+	$('#descripcion_selecc').after('<div id="google_clientes"></div>');
+	$('#google_clientes').append('<h2 id="titulo_clientes">Clientes Alojados<h2>');
+	google_plus_clientes('112657067196273212991');
+	google_plus_clientes('+GregorioRobles');
+	$('#google_clientes').after('<form class="formulario_cliente" action="#"><ul><li><h2>Añadir Cliente</h2></li><li><label for="id_cliente">ID Cliente:</label><input id="id_google_cliente"type="text"  placeholder="p.ej: +GregorioRobles" required /></li><li><button id="anadir_cliente" class="submit" type="submit">Enviar</button></li>')
+
+	$('#anadir_cliente').on('click',function() {
+		var id_cliente_g = $('input#id_google_cliente').val();
+		var id_usuario = id_cliente_g.toString();
+		google_plus_clientes(id_usuario);
+
+	})
+
 }
 
+var google_plus_clientes = function (id_usuario) {
+	var api = 'AIzaSyBE14FRa5Z_kxmfTs1t-p5mdBmYmmKXOe8';
+	gapi.client.setApiKey(api);
+	gapi.client.load('plus','v1', function () {
+		var solicitud = gapi.client.plus.people.get({
+            'userId': id_usuario
+          });
+		solicitud.execute(function(resp) {
+			var cliente = document.createElement('h4');
+			var imagen_cliente = document.createElement('img');
+			imagen_cliente.src = resp.image.url;
+			cliente.append(imagen_cliente);
+			cliente.appendChild(document.createTextNode(resp.displayName));
+            document.getElementById('google_clientes').appendChild(cliente);
+		})
+	})
+}
 
 
 
