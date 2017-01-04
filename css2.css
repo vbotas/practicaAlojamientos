@@ -25,14 +25,15 @@ body {
 }
 
 .btn.btn-primary {
-	margin-right: 5px;
+	margin: 10px 5px 0 5px;
 
-	float:right;
+	float: left;
 }
 #mapa, #mapa_clientes_alojados {
+
 	width: 800px;
 	height: 400px;
-	margin: 0 auto;
+	margin: 30px auto 0 auto;
 	border:3px solid grey;
 	border-radius: 15px;
 }
@@ -254,3 +255,4 @@ input {
 	border: 1px solid #222;
 	box-shadow: 0 0 10px 5px #444 inset; 
 }
+

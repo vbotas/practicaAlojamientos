@@ -1,10 +1,11 @@
 //FUNCIONES PARA TODAS LAS PESTAÑAS
 var guardar = function () {
-	alert('HAS CLICKADO GUARDAR')
+	console.log('HAS CLICKADO GUARDAR')
+	
 }
 
 var cargar = function() {
-	alert('HAS CLIKADO CARGAR')
+	console.log('HAS CLICKADO CARGAR')
 }
 
 //FUNCIONES PESTAÑA "GESTION DE ALOJADOS"

@@ -10,6 +10,7 @@
 		<title>Alojamientos en Madrid</title>
 
 		<link rel="stylesheet" type="text/css" href="./jquery-ui-1.12.1/jquery-ui.css">
+		
 		<link rel="stylesheet" type="text/css" href="./leaflet.css">
 		<link rel="stylesheet" type="text/css" href="./css2.css">
 		<link href="./bootstrap.min.css" rel="stylesheet">
@@ -19,6 +20,7 @@
 		<script src='./jquery-ui-1.12.1/jquery-ui.js'></script>
 		<script src='./leaflet.js'></script>
 		<script src='./js2.js'></script>
+		<script src="./bootstrap.min.js"></script>
 		<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 	</head>
 
@@ -31,8 +33,8 @@
 				<li><a href='#colecciones'>Colecciones</a></li>
 				<li><a href='#clientes_alojados'>Clientes Alojados</a></li>
 			</ul>
-			<button type='button' class='btn btn-primary' id='boton_guardar'>Guardar</button>
-			<button type='button' class='btn btn-primary' id='boton_cargar'>Cargar</button>
+			<a href='#formulario_guardado' class='btn btn-primary' id='boton_guardar' data-toggle='modal'>Guardar</a>
+			<a href='#formulario_carga' class='btn btn-primary' id='boton_cargar' data-toggle='modal'>Cargar</a>
 			<div id='principal'>
 				<div id='mapa'></div>
 				<p id='ver_alojamientos'>Ver Alojamientos en Madrid</p>
@@ -86,6 +88,45 @@
 			<div id='clientes_alojados'>
 				<!-- <p>HOLITAAAAAAAAAAAAAAAAAAAAAAAAAA</p> -->
 			</div>
+			
+			<div class='modal fade' id='formulario_guardado'>
+				<div class='modal-dialog'>
+					<div class="modal-content">
+						<div class="modal-header">
+							<button tyle='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+							<h4 class='modal-title'>Formulario de Guardado</h4>
+						</div>
+						<div class='modal-body'>
+							<p>hola tronco</p>
+						</div>
+						<div class='modal-footer'>
+							<button tyle='button' class='btn btn-default' data-dismiss='modal' >Cerrar</button>
+							<button tyle='button' class='btn btn-success' id='enviar_formulario'>Enviar</button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+
+			<div class='modal fade' id='formulario_carga'>
+				<div class='modal-dialog'>
+					<div class="modal-content">
+						<div class="modal-header">
+							<button tyle='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+							<h4 class='modal-title'>Formulario de Carga</h4>
+						</div>
+						<div class='modal-body'>
+							<p>hola tronco</p>
+						</div>
+						<div class='modal-footer'>
+							<button tyle='button' class='btn btn-default' data-dismiss='modal' >Cerrar</button>
+							<button tyle='button' class='btn btn-success' id='enviar_formulario'>Enviar</button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
 		</div>
 	</body>
 </html>
