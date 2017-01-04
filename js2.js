@@ -21,16 +21,43 @@ var guardar = function () {
 	 		alert('Se ha producido un error');
 	 	}
 	 	else {
-	 		var contenido_fichero = 'Aquí habría que meter las colecciones y los usuarios asociados';
+	 		var contenido_fichero = 'hola holita vecinito';
 	 		repositorio_objetivo.write('master', nombre_fichero, contenido_fichero,"Datos guardados desde la aplicación web", function(err) {
                     console.log (err)
                 });
- 	}
- })
+ 		}
+ 	})
 }
 
 var cargar = function() {
-	console.log('HAS CLICKADO CARGAR')
+	//console.log('HAS CLICKADO CARGAR')
+	var usu_cargar = 'vbotas';
+	var repo_cargar = $('#repo_carga').val();
+	var nombre_fichero_cargar = $('#nombre_fichero_carga').val();
+	var token_cargar = $('#token_carga').val();
+
+	console.log(token_cargar);
+	console.log(repo_cargar);
+	console.log(nombre_fichero_cargar);
+	console.log(usu_cargar);
+
+	github = new Github({
+		token: token_cargar,
+		auth: 'oauth'
+	});
+
+	repositorio_objetivo = github.getRepo( usu_cargar, repo_cargar);
+	repositorio_objetivo.show(function (error, repo){
+		if (error) {
+	 		alert('Se ha producido un error');
+	 	}
+	 	else {
+	 			repositorio_objetivo.read('master', nombre_fichero_cargar, function(err,datos_leidos) {
+	 		//	console.log(err,datos_leidos);
+	 			alert(datos_leidos);
+	 		})
+ 		}
+ 	})
 }
 
 //FUNCIONES PESTAÑA "GESTION DE ALOJADOS"
@@ -767,5 +794,5 @@ $(document).ready(function() {
 
 	});
 	$('#enviar_formulario').click(guardar);
-	$('#boton_cargar').click(cargar);
+	$('#boton_cargar_fichero').click(cargar);
 });
