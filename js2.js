@@ -1,12 +1,56 @@
 //FUNCIONES PARA TODAS LAS PESTAÑAS
 var guardar = function () {
-	alert('HAS CLICKADO GUARDAR');
-	var token = $('#token').val();
-	var repo = $('#repo').val();
-	var nombre_fichero = $('#nombre_fichero').val();
-	console.log(token, repo, nombre_fichero);
-	
 
+	var token = $("#token").val();
+    console.log (token);
+
+    github = new Github({
+	token: token,
+	auth: "oauth"
+    });
+
+    var user = 'vbotas';
+    var reponame = $("#repo").val();
+    console.log(reponame);
+    var fichero = $('#nombre_fichero').val();
+    myrepo = github.getRepo(user, reponame);
+    myrepo.show(function (error, repo) {
+    	if (error) {
+    		alert('Ha ocurrido algo.');
+    	}
+    	else {
+    		var contenido = 'abcdefghijklmnñopqrstuvwxyz';
+    		//alert(repo.full_name);
+    		myrepo.write('master', 'datafile', contenido, "Updating data", function(err) {
+		     console.log (err)
+		 });
+    	}
+    });
+	//alert('HAS CLICKADO GUARDAR');
+	// var token = $('#token').val();
+	// var repo = $('#repo').val();
+	// var nombre_fichero = $('#nombre_fichero').val();
+	// //var fich = nombre_fichero + '.json';
+	// var usu = 'vbotas';
+	// console.log(token, repo, nombre_fichero);
+
+	// github = new Github({
+	// token: token,
+	// auth: "oauth"
+ //    });
+
+	// repositorio = github.getRepo( usu, repo);
+	// repositorio.show(function (error, repositorio){
+	// 	if (error) {
+	// 		alert('Se ha producido un error');
+	// 	}
+	// 	else {
+	// 		var contenido_fichero = 'Aquí habría que meter las colecciones y los usuarios asociados';
+	// 		repositorio.write('master', nombre_fichero, contenido_fichero,"Datos guardados desde la aplicación web", function(err) {
+ //                    console.log (err)
+ //                });
+	// 	}
+	// })
 }
 
 var cargar = function() {
