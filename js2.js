@@ -1,10 +1,10 @@
 //FUNCIONES PARA TODAS LAS PESTAÑAS
 var guardar = function () {
-
+	alert('HAS CLICKADO GUARDAR')
 }
 
 var cargar = function() {
-	
+	alert('HAS CLIKADO CARGAR')
 }
 
 //FUNCIONES PESTAÑA "GESTION DE ALOJADOS"
@@ -740,5 +740,6 @@ $(document).ready(function() {
 	 	$('#clientes_alojados').css({'display':'block'});
 
 	});
-
+	$('#boton_guardar').click(guardar);
+	$('#boton_cargar').click(cargar);
 });
