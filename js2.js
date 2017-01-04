@@ -1,4 +1,14 @@
+//FUNCIONES PARA TODAS LAS PESTAÑAS
+var guardar = function () {
+
+}
+
+var cargar = function() {
+	
+}
+
 //FUNCIONES PESTAÑA "GESTION DE ALOJADOS"
+
 var mostrar_alojamiento_seleccionado = function (latitud_selecc, longitud_selecc, direccion_selecc, descripcion_selecc, url_web_selecc, nombre_selecc, imagen_selecc, categoria_selecc, subcategoria_selecc, id_alojamiento_selecc) {
 	console.log('Aquí se mostrará la descripción del hotel seleccionado en la pestaña principal.');
 	if($('#mapa_clientes_alojados').length > 0) {
@@ -85,14 +95,7 @@ var google_plus_clientes = function (id_usuario) {
 
 
 
-
-
-
-
-
-
 //FUNCIONES PESTAÑA "COLECCIONES"
-
 
 var cuadro_alojamientos = function () {
 	$.getJSON('alojamientos2.json', function (datos_alojamientos) {
@@ -289,12 +292,6 @@ var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
 		mapa_coleccion.setView([latitud, longitud], 16);
 	}	
 }
-
-
-
-
-
-
 
 
 
@@ -693,8 +690,8 @@ var borrar_formulario = function() {
 
 
 
-
 //FUNCIONES QUE SE EJECUTAN AL CARGAR LA PÁGINA
+
 $(document).ready(function() {
 	$('#tabs').tabs();
 	p=0;
