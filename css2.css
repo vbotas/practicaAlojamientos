@@ -256,3 +256,55 @@ input {
 	box-shadow: 0 0 10px 5px #444 inset; 
 }
 
+.modal-header h4 {
+    color: #fff;
+    font-size: 25px;
+    line-height: 3em;
+}
+
+.modal-body h5 {
+    color: #fff;
+    font-size: 13px;
+    display: block;
+    float: left;
+    text-align: left;
+    padding-right: 15px;
+    width: 100px;
+    line-height: 3em;
+}
+.modal-body input {
+	margin-bottom: 20px;
+}
+.modal-body input.text{
+  width: 100%;
+  background: #171717 url(images/search.png) no-repeat scroll right;
+  padding: 13px;
+  color: #8c8c8c;
+  border: 1px solid #393939;
+  margin-bottom: 30px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  font-size: 16px;
+}
+
+.modal-body input.text.active{
+  background: #343434 url(images/search.png) no-repeat;
+  border-color: #000;
+  color: #fff;
+}
+
+.modal-content {
+	background-image: url(images/bg.png);
+    background-position-x: 0px;
+    background-position-y: 0px;
+    background-size: initial;
+    background-repeat-x: repeat;
+    background-repeat-y: repeat;
+    background-attachment: scroll;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: rgb(38, 38, 38);
+}
+

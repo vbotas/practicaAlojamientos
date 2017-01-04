@@ -1,7 +1,12 @@
 //FUNCIONES PARA TODAS LAS PESTAÑAS
 var guardar = function () {
-	console.log('HAS CLICKADO GUARDAR')
+	alert('HAS CLICKADO GUARDAR');
+	var token = $('#token').val();
+	var repo = $('#repo').val();
+	var nombre_fichero = $('#nombre_fichero').val();
+	console.log(token, repo, nombre_fichero);
 	
+
 }
 
 var cargar = function() {
@@ -741,6 +746,6 @@ $(document).ready(function() {
 	 	$('#clientes_alojados').css({'display':'block'});
 
 	});
-	$('#boton_guardar').click(guardar);
+	$('#enviar_formulario').click(guardar);
 	$('#boton_cargar').click(cargar);
 });
