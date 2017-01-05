@@ -12,12 +12,23 @@ var ver_contenido_fichero = function () {
 			//contenido_fichero += $(this).text()+' Pertenece a la coleccion'+contador+'||';
 			// contenido_fichero += $(this).text()+'||';
 			console.log('mirando el elemento '+indice+'del each()');
-			contenido_fichero = contenido_fichero +'{"nombre_alojamiento":"'+ $(this).text() + '"},';
+			console.log($('#coleccion'+contador+' > #alojamiento_coleccion').length);
+			if ( indice+1 === $('#coleccion'+contador+' > #alojamiento_coleccion').length){
+				contenido_fichero = contenido_fichero +'{"nombre_alojamiento":"'+ $(this).text() + '"}';				
+			}
+			else {
+				contenido_fichero = contenido_fichero +'{"nombre_alojamiento":"'+ $(this).text() + '"},';	
+			}
 			console.log(contenido_fichero);
 			//console.log('Esta coleccion'+array_colecciones[contador]+' tiene: '+$('#coleccion'+contador+' > #alojamiento_coleccion').length+' alojamientos asociados');
 
 		})
-		contenido_fichero = contenido_fichero + ']}]},';
+		if(contador +1 === array_colecciones.length) {
+			contenido_fichero = contenido_fichero + ']}]}';	
+		}
+		else {
+			contenido_fichero = contenido_fichero + ']}]},';	
+		}
 		console.log(contenido_fichero);
 	}
 	contenido_fichero = contenido_fichero + ']}'
@@ -51,6 +62,7 @@ var guardar = function () {
 	 	else {
 	 		repositorio_objetivo.write('master', nombre_fichero, contenido_fichero,"Datos guardados desde la aplicación web", function(err) {
                     console.log (err)
+                    alert('Fichero Guardado');
                 });
  		}
  	})
@@ -81,10 +93,30 @@ var cargar = function() {
 	 	else {
 	 			repositorio_objetivo.read('master', nombre_fichero_cargar, function(err,datos_leidos) {
 	 		//	console.log(err,datos_leidos);
-	 			alert(datos_leidos);
+	 			// alert(datos_leidos);
+	 			var contenido_json = datos_leidos;
+	 			console.log('El contenido del fichero es: /////'+contenido_json+'/////');
+	 			alert('Fichero Cargado.');
+	 			var json_2_js = JSON.parse(contenido_json);
+	 			console.log(json_2_js);
+	 			//console.log(contenido_json[0].colecciones.length);
+	 			//leer_contenido_fichero (datos_leidos);
+	 		// 	$.getJSON(nombre_fichero_cargar, function (datosFichero) {
+				// 	colecciones = datosFichero.colecciones;
+				// 	console.log(colecciones.length);
+				// });
 	 		})
  		}
  	})
+ 	
+}
+
+var leer_contenido_fichero = function (nombre_fichero_cargar, datos_fichero) {
+	alert(datos_fichero);
+	$.getJSON(nombre_fichero_cargar, function (datos_fichero) {
+		colecciones = datos_fichero.colecciones;
+		console.log(colecciones.length);
+	});
 }
 
 //FUNCIONES PESTAÑA "GESTION DE ALOJADOS"
@@ -300,7 +332,7 @@ var seleccionar_coleccion = function(identificador_coleccion, num_colecc){
 		$('#nombre_coleccion_creada').removeClass('coleccion_seleccionada');
 	}
 	$('#'+identificador_coleccion+' #nombre_coleccion_creada').addClass('coleccion_seleccionada');
-	var num_alojamientos = $('#'+identificador_coleccion+' > #alojamiento_coleccion').length;
+	num_alojamientos = $('#'+identificador_coleccion+' > #alojamiento_coleccion').length;
 	console.log('La coleccion tiene asociada: ' + num_alojamientos + ' alojamientos');
 	$('#'+identificador_coleccion+' > #alojamiento_coleccion').each(function() {
 		//console.log($(this).text());
