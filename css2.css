@@ -37,7 +37,21 @@ body {
 	border:3px solid grey;
 	border-radius: 15px;
 }
-
+.fotos {
+	display:inline;
+	margin: 4px;
+	border:2px solid grey;
+	border-radius:15px;
+	width: 400px;
+	height: 250px;
+}
+#fotos {
+	display: block;
+}
+#cerrar {
+	float:left;
+	display: block;
+}
 #mapa_coleccion {
 	float: right;
 	width:600px;
