@@ -5,7 +5,8 @@ var ver_contenido_fichero = function () {
 	for (var contador = 0; contador < array_colecciones.length; contador ++){
 		console.log(contador);
 		// contenido_fichero += array_colecciones[contador]+ ':';
-		contenido_fichero = contenido_fichero +'{"coleccion'+ contador + '":[{"nombre":"'+array_colecciones[contador]+'","alojamientos":[';
+		//contenido_fichero = contenido_fichero +'{"coleccion'+ contador + '":[{"nombre":"'+array_colecciones[contador]+'","alojamientos":[';
+		contenido_fichero = contenido_fichero +'{"coleccion":[{"nombre":"'+array_colecciones[contador]+'","alojamientos":[';
 		console.log(contenido_fichero);
 		$('#coleccion'+contador+' > #alojamiento_coleccion').each(function(indice) {
 			console.log($(this).text()+' Pertenece a la coleccion'+contador+' ');
@@ -99,12 +100,21 @@ var cargar = function() {
 	 			alert('Fichero Cargado.');
 	 			var json_2_js = JSON.parse(contenido_json);
 	 			console.log(json_2_js);
-	 			//console.log(contenido_json[0].colecciones.length);
-	 			//leer_contenido_fichero (datos_leidos);
-	 		// 	$.getJSON(nombre_fichero_cargar, function (datosFichero) {
-				// 	colecciones = datosFichero.colecciones;
-				// 	console.log(colecciones.length);
-				// });
+	 			console.log(json_2_js.colecciones.length);
+	 			//console.log(json_2_js.colecciones[0].length);
+	 			for (cont_colec = 0; cont_colec < json_2_js.colecciones.length; cont_colec++){
+	 				console.log(json_2_js.colecciones[cont_colec]);
+	 				console.log(json_2_js.colecciones[cont_colec].coleccion);
+	 				console.log(json_2_js.colecciones[cont_colec].coleccion[0].nombre);
+	 				
+	 				console.log(json_2_js.colecciones[cont_colec].coleccion[0].alojamientos);
+	 				console.log(json_2_js.colecciones[cont_colec].coleccion[0].alojamientos.length);
+	 				for (cont_aloj = 0; cont_aloj < json_2_js.colecciones[cont_colec].coleccion[0].alojamientos.length; cont_aloj++){
+	 					console.log(json_2_js.colecciones[cont_colec].coleccion[0].alojamientos[cont_aloj].nombre_alojamiento);
+	 				}
+	 			}
+	 			
+	 			
 	 		})
  		}
  	})
