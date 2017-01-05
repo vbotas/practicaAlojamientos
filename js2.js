@@ -1,6 +1,34 @@
+var ver_contenido_fichero = function () {
+	console.log('Las colecciones creadas son: '+array_colecciones);
+	contenido_fichero = '{"colecciones":[';
+	// contenido_fichero = '';
+	for (var contador = 0; contador < array_colecciones.length; contador ++){
+		console.log(contador);
+		// contenido_fichero += array_colecciones[contador]+ ':';
+		contenido_fichero = contenido_fichero +'{"coleccion'+ contador + '":[{"nombre":"'+array_colecciones[contador]+'","alojamientos":[';
+		console.log(contenido_fichero);
+		$('#coleccion'+contador+' > #alojamiento_coleccion').each(function(indice) {
+			console.log($(this).text()+' Pertenece a la coleccion'+contador+' ');
+			//contenido_fichero += $(this).text()+' Pertenece a la coleccion'+contador+'||';
+			// contenido_fichero += $(this).text()+'||';
+			console.log('mirando el elemento '+indice+'del each()');
+			contenido_fichero = contenido_fichero +'{"nombre_alojamiento":"'+ $(this).text() + '"},';
+			console.log(contenido_fichero);
+			//console.log('Esta coleccion'+array_colecciones[contador]+' tiene: '+$('#coleccion'+contador+' > #alojamiento_coleccion').length+' alojamientos asociados');
+
+		})
+		contenido_fichero = contenido_fichero + ']}]},';
+		console.log(contenido_fichero);
+	}
+	contenido_fichero = contenido_fichero + ']}'
+	console.log(contenido_fichero);
+};
+
+
 //FUNCIONES PARA TODAS LAS PESTAÑAS
 var guardar = function () {
 	//alert('HAS CLICKADO GUARDAR');
+	console.log(array_colecciones)
 	var token = $('#token').val();
 	var repo = $('#repo').val();
 	var nombre_fichero = $('#nombre_fichero').val();
@@ -21,7 +49,6 @@ var guardar = function () {
 	 		alert('Se ha producido un error');
 	 	}
 	 	else {
-	 		var contenido_fichero = 'hola holita vecinito';
 	 		repositorio_objetivo.write('master', nombre_fichero, contenido_fichero,"Datos guardados desde la aplicación web", function(err) {
                     console.log (err)
                 });
@@ -228,17 +255,31 @@ var add_coleccion = function (id_alojamiento_recibido,nombre,lat_aloj, long_aloj
 var crear_coleccion = function (id_alojamiento_recibido) {
 
 	nombre_coleccion_nueva = $('input:text[name=nombre_coleccion]').val()
-	$('#colecciones_creadas').append('<div class="coleccion" id="coleccion_nueva"><div class="coleccion_nueva" id="coleccion'+j+'"><p id="nombre_coleccion_creada" onclick="desplegar_coleccion('+j+')">'+nombre_coleccion_nueva + '</p></div></div>');
-	j += 1;
-	array_colecciones.push('coleccion'+j);
+	if($.inArray(nombre_coleccion_nueva, array_colecciones) === -1) {
+		$('#colecciones_creadas').append('<div class="coleccion" id="coleccion_nueva"><div class="coleccion_nueva" id="coleccion'+j+'"><p id="nombre_coleccion_creada" onclick="desplegar_coleccion('+j+')">'+nombre_coleccion_nueva + '</p></div></div>');
+		j += 1;
+
+		// // coleccion.push(array_colecciones);
+		// // array_colecciones.push(j);
+		array_colecciones.push(nombre_coleccion_nueva);
+		// // console.log(coleccion);
+		// // console.log(array_colecciones);
+		// var num_colecciones = $('.coleccion').size();
+		// console.log(num_colecciones);
+		
+	}
+	else {
+		console.log('Ya está creada');
+	}
+	//array_colecciones.push(nombre_coleccion_nueva);
+	console.log(array_colecciones);
 	$('.coleccion_nueva').droppable({
 			drop: function(evento, ui) {
 				$(this).append('<p id="alojamiento_coleccion" onclick="mostrar_mapa_coleccion('+ui.draggable.attr('numero')+','+j+')">'+ ui.draggable.text()+'</p>');
-
                 //alert("objeto con id="+ ui.draggable.text());
+
 			}
 	});
-	console.log(array_colecciones);
 }
 
 var desplegar_coleccion = function(param) {
@@ -248,16 +289,36 @@ var desplegar_coleccion = function(param) {
 	$('#'+id_coleccion+' > #alojamiento_coleccion').slideToggle("slow");
 	//var IDpadre = $(this).parent().attr('id');
 	//alert(IDpadre);
-	seleccionar_coleccion(id_coleccion)
+	seleccionar_coleccion(id_coleccion,param)
 }
 
-var seleccionar_coleccion = function(identificador_coleccion){
+var seleccionar_coleccion = function(identificador_coleccion, num_colecc){
 	//alert(identificador_coleccion);
 	console.log(identificador_coleccion + ' seleccionada.');
+	coleccion = [];
 	if( $('.coleccion_seleccionada').length > 0 )  {
 		$('#nombre_coleccion_creada').removeClass('coleccion_seleccionada');
 	}
 	$('#'+identificador_coleccion+' #nombre_coleccion_creada').addClass('coleccion_seleccionada');
+	var num_alojamientos = $('#'+identificador_coleccion+' > #alojamiento_coleccion').length;
+	console.log('La coleccion tiene asociada: ' + num_alojamientos + ' alojamientos');
+	$('#'+identificador_coleccion+' > #alojamiento_coleccion').each(function() {
+		//console.log($(this).text());
+		if ($.inArray(identificador_coleccion, coleccion) === -1) {
+			coleccion.push(identificador_coleccion);
+			coleccion.push($(this).text());	
+			//contenido_fichero += contenido_fichero + coleccion;
+		}
+		else {
+			coleccion.push($(this).text());	
+		}
+		console.log(coleccion);
+		ver_contenido_fichero();
+		// if($.inArray(coleccion, array_colecciones) === -1) {
+		// 	array_colecciones.push(coleccion);
+		// 	console.log(array_colecciones);
+		// }
+	})
 	var nombre_coleccion_seleccionada = $('.coleccion_seleccionada').text();
 	if( $('#coleccion_seleccionada').length > 0 )  {
 		$('#coleccion_seleccionada').append('<p>'+($('#nombre_coleccion_creada').siblings('#alojamiento_coleccion')).text()+'<br /></p>');
@@ -751,7 +812,8 @@ $(document).ready(function() {
 	j=0;
 	array_coleccion = [];
 	array_colecciones = [];
-	coleccion_alojamientos_vistos = [];
+	coleccion = [];
+	//var contenido_fichero= '';
 	console.log('Lista_alojamientos: longitud = '+ $('#lista_alojamientos').length);
 
 	/*Inicializamos el mapa*/
