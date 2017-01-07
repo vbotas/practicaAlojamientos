@@ -122,7 +122,7 @@ var cargar = function() {
 	 						console.log(json_2_js.colecciones[cont_colec].coleccion[0].alojamientos[cont_aloj].numero);
 	 						nombre_alojamiento_cargado = json_2_js.colecciones[cont_colec].coleccion[0].alojamientos[cont_aloj].nombre_alojamiento;
 	 						numero_alojamiento_cargado = json_2_js.colecciones[cont_colec].coleccion[0].alojamientos[cont_aloj].numero;
-	 						$('#coleccion'+j+' > #nombre_coleccion_creada').after('<p id="alojamiento_coleccion" onclick="mostrar_mapa_coleccion('+numero_alojamiento_cargado+','+j+')">'+ nombre_alojamiento_cargado +'</p>');
+	 						$('#coleccion'+j+' > #nombre_coleccion_creada').after('<p id="alojamiento_coleccion" onclick="mostrar_mapa_coleccion('+numero_alojamiento_cargado+','+j+')" numero="'+numero_alojamiento_cargado+'">'+ nombre_alojamiento_cargado +'</p>');
 
 	 					}
 	 					j += 1;
@@ -381,7 +381,7 @@ var crear_coleccion = function (id_alojamiento_recibido) {
 	$('.coleccion_nueva').droppable({
 			drop: function(evento, ui) {
 				if($.inArray(ui.draggable.text(), array_nombres_alojamientos) === -1) {
-					$(this).append('<p id="alojamiento_coleccion" onclick="mostrar_mapa_coleccion('+ui.draggable.attr('numero')+','+j+')" numero='+ui.draggable.attr('numero')+'>'+ ui.draggable.text()+'</p>');
+					$(this).append('<p id="alojamiento_coleccion" onclick="mostrar_mapa_coleccion('+ui.draggable.attr('numero')+','+j+')" numero="'+ui.draggable.attr("numero")+'">'+ ui.draggable.text()+'</p>');
 					array_nombres_alojamientos.push(ui.draggable.text())
 					console.log(array_nombres_alojamientos);	
 				}
@@ -410,12 +410,15 @@ var seleccionar_coleccion = function(identificador_coleccion, num_colecc){
 	$('#'+identificador_coleccion+' #nombre_coleccion_creada').addClass('coleccion_seleccionada');
 	num_alojamientos = $('#'+identificador_coleccion+' > #alojamiento_coleccion').length;
 	console.log('La coleccion tiene asociada: ' + num_alojamientos + ' alojamientos');
+	//coleccion.push(identificador_coleccion);
 	$('#'+identificador_coleccion+' > #alojamiento_coleccion').each(function() {
 		//console.log($(this).text());
 		if ($.inArray(identificador_coleccion, coleccion) === -1) {
 			coleccion.push(identificador_coleccion);
+			console.log(coleccion)
 			if($.inArray($(this).text(), coleccion) === -1) {
-				coleccion.push($(this).text());		
+				coleccion.push($(this).text());
+				console.log(coleccion);	
 			}
 		}
 		// else {
@@ -443,6 +446,7 @@ var seleccionar_coleccion = function(identificador_coleccion, num_colecc){
 		$('#coleccion_seleccionada').html('Coleccion seleccionada: ');
 		$('#coleccion_seleccionada').append('<p>'+nombre_coleccion_seleccionada+'</p>');
 		$('.coleccion_seleccionada').siblings('#alojamiento_coleccion').each(function() {
+			//$('#coleccion_seleccionada').append('<p id="alojamientos_coleccion_seleccionada" onclick="mostrar_mapa_coleccion('+$(this).attr('numero')+')">'+$(this).text()+'</p>');
 			$('#coleccion_seleccionada').append('<p id="alojamientos_coleccion_seleccionada">'+$(this).text()+'</p>');
 		})
 	}
@@ -686,6 +690,13 @@ var buscar_alojamiento = function () {
 	array_busqueda.push(nombre_buscado);
 	array_busqueda.push(valor_categoria);
 	//Dependiendo del alojamiento buscado, tendrá o no "subcategoría",aquí se diferencia cada caso, añadiéndolo o no al array_busqueda.
+
+	if (nombre_buscado !== '')
+		if (valor_categoria ==='0') {
+			console.log('busca por nombre');
+			console.log(nombre_buscado);
+		}
+
 	if (valor_categoria === '1') {
 		valor_subcategoria = $('input:radio[name=estrellas_hoteles]:checked').val();
 		$("#seleccionar_subcategoria").submit();
@@ -709,7 +720,13 @@ var buscar_alojamiento = function () {
 		console.log('empieza a leer');
 		alojamientos = datos_alojamientos.serviceList.service;
 		console.log('hay '+alojamientos.length+' alojamientos leidos');
-		$('#buscar_alojamiento').after('<div id="resultado_busqueda"></div>');
+		if ($('#resultado_busqueda').length > 0 ) {
+			$('#resultado_busqueda').remove();
+			$('#buscar_alojamiento').after('<div id="resultado_busqueda"></div>');		
+		}
+		else {
+			$('#buscar_alojamiento').after('<div id="resultado_busqueda"></div>');	
+		}
 		var lista_alojamientos_encontrados = '<p id="cabecera_busqueda">Resultados de la Búsqueda<p><ol>'
 		for (var j=0; j < alojamientos.length; j++) {
 			nombre_leido = alojamientos[j].basicData.name;
@@ -727,7 +744,7 @@ var buscar_alojamiento = function () {
 					case '1':
 						if (categoria_leida === 'Hoteles'){
 							
-							subcategoria_leida = alojamientos[j].extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text'];
+							subcategoria_leida = es_null(alojamientos[j].extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text']);
 							switch (valor_subcategoria) {
 								case '1':
 									if(subcategoria_leida === '1 estrella') {
@@ -765,21 +782,21 @@ var buscar_alojamiento = function () {
 						break;
 					case '2':
 						if (categoria_leida ==='Hostales') {
-							subcategoria_leida = alojamientos[j].extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text'];
+							subcategoria_leida = es_null(alojamientos[j].extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text']);
 							switch (valor_subcategoria) {
 								case '1':
 									if(subcategoria_leida === '1 estrella') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '2':
 									if(subcategoria_leida === '2 estrellas') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '3':
 									if(subcategoria_leida === '3 estrellas') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 							}
@@ -789,26 +806,26 @@ var buscar_alojamiento = function () {
 					case '3':
 						if (categoria_leida === 'Apartahoteles') {
 							$('#resultado_busqueda').empty();
-							subcategoria_leida = alojamientos[j].extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text'];
+							subcategoria_leida = es_null(alojamientos[j].extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text']);
 							switch (valor_subcategoria) {
 								case '1':
 									if(subcategoria_leida === '1 llave') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '2':
 									if(subcategoria_leida === '2 llaves') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '3':
 									if(subcategoria_leida === '3 llaves') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 								case '4':
 									if(subcategoria_leida === '4 llaves') {
-										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
+										lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
 									}
 									break;
 							}
@@ -818,38 +835,43 @@ var buscar_alojamiento = function () {
 					case '4':
 						if (categoria_leida === 'Residencias universitarias') {
 							$('#resultado_busqueda').empty();
-							lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';	
+							lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';	
 						}
 						break;
 					case '5':
 						if (categoria_leida === 'Camping') {
 							$('#resultado_busqueda').empty();
-							lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';	
+							lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';	
 						}
 						break;
 					case '6':
 						if (categoria_leida === 'Albergues') {
 							$('#resultado_busqueda').empty();
-							lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';	
+							lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';	
 						}
 						break;
 					case '7':
 						if (categoria_leida === 'Pensiones') {
 							$('#resultado_busqueda').empty();
-							lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';	
+							lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';	
 						}
 						break;							
-						
-						
 				}
 			}
-
-			/*if (nombre_buscado !== '')
-				if (valor_categoria ==='undefined') {
-					console.log('busca por nombre');
-				}*/
+			else {
+				// console.log(nombre_leido);
+				// console.log('El nombre buscado es:'+nombre_buscado);
+				if (nombre_leido === nombre_buscado) {
+					$('#resultado_busqueda').empty();
+					lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li numero='+j+'>' + nombre_leido + '</li>';
+				}
+				else {
+					console.log('No se han encontrado coincidencias.');
+				}
+			}
 		}
 		lista_alojamientos_encontrados = lista_alojamientos_encontrados + '</ol>';
+		//$('#resultado_busqueda').remove();
 		$('#resultado_busqueda').text('');
 		$('#resultado_busqueda').html(lista_alojamientos_encontrados);
 		$('ol li').click(mostrar_alojamientos);

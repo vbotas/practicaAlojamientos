@@ -109,14 +109,15 @@ input {
  	float left;
  	margin-left: 25px;
  }
-/*#resultado_busqueda {
+#resultado_busqueda {
 	margin-left: 25px;
 	margin-top: 50px;
-	width: 200px;
-	height: 200px;
+	width: 450px;
+	height: 300px;
 	float:left;
 	border: 2px solid grey;
-}*/
+	overflow-y: auto;
+}
 
 #colecciones_creadas {
 	border:2px solid grey;
