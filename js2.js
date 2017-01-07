@@ -281,7 +281,7 @@ var cuadro_alojamientos = function () {
 		//$('#lista_alojamientos').after('<h1>' + alojamientos.length + '</h1>');
 		console.log(alojamientos.length);
 
-		var lista2 = 'Alojamientos en Madrid: ';
+		var lista2 = '<p>Alojamientos en Madrid: </p>';
 		console.log(lista2);
 		lista2 = lista2 + '<ol>'
 		for(var i = 0; i < alojamientos.length; i++) {
@@ -504,7 +504,14 @@ var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
 		.openPopup();
 
 	mapa.setView([latitud, longitud], 16);
-	$('#mapa').after('<div id="descripcion"></div>');
+	if ($('#descripcion').length > 0) {
+		$('#descripcion').remove()
+		$('#mapa').after('<div id="descripcion"></div>');
+	}
+	else {
+		$('#mapa').after('<div id="descripcion"></div>');	
+	}
+	
 	$('#descripcion').html('<h2 style = "text-decoration: underline; font-weight: bold;font-style: oblique;">' + nombre + '</h2>' + 
 		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Dirección: </p><p>' + direccion + '</p>' +
 		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Descripción: </p><p>' + descripcion + '</p>' +
