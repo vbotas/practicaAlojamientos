@@ -235,10 +235,13 @@ var mostrar_alojamiento_seleccionado = function (latitud_selecc, longitud_selecc
 			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);		
 		}	
 	}
+	$('#google_clientes').remove();
+	$('.formulario_cliente').remove();
 	$('#descripcion_selecc').after('<div id="google_clientes"></div>');
 	$('#google_clientes').append('<h2 id="titulo_clientes">Clientes Alojados<h2>');
 	google_plus_clientes('112657067196273212991');
 	google_plus_clientes('+GregorioRobles');
+
 	$('#google_clientes').after('<form class="formulario_cliente" action="#"><ul><li><h2>Añadir Cliente</h2></li><li><label for="id_cliente">ID Cliente:</label><input id="id_google_cliente"type="text"  placeholder="p.ej: +GregorioRobles" required /></li><li><button id="anadir_cliente" class="submit" type="submit">Enviar</button></li>')
 
 	$('#anadir_cliente').on('click',function() {
@@ -273,7 +276,7 @@ var google_plus_clientes = function (id_usuario) {
 //FUNCIONES PESTAÑA "COLECCIONES"
 
 var cuadro_alojamientos = function () {
-	$.getJSON('alojamientos2.json', function (datos_alojamientos) {
+	$.getJSON('alojamientos.json', function (datos_alojamientos) {
 		alojamientos = datos_alojamientos.serviceList.service;
 		//$('#lista_alojamientos').after('<h1>' + alojamientos.length + '</h1>');
 		console.log(alojamientos.length);
@@ -322,7 +325,15 @@ var add_coleccion = function (id_alojamiento_recibido,nombre,lat_aloj, long_aloj
 	else {
 		console.log('Ya está en la colección.');
 	}
-	$('#nombre_coleccion_creada').after('<p id="alojamiento_coleccion">'+ nombre +'</p>');
+	if($.inArray(nombre, array_nombres_alojamientos) === -1) {
+		$('#nombre_coleccion_creada').after('<p id="alojamiento_coleccion">'+ nombre +'</p>');
+		array_nombres_alojamientos.push(nombre);
+		console.log(array_nombres_alojamientos);
+	}
+	else {
+		console.log('Ya está añadido en la colección');
+	}
+	
 	if($('#mapa_coleccion').length >0) {
 		L.marker([lat_aloj,long_aloj]).addTo(mapa_coleccion)
 		.bindPopup('<a>' + nombre + '</a><br />')
@@ -366,13 +377,14 @@ var crear_coleccion = function (id_alojamiento_recibido) {
 	else {
 		console.log('Ya está creada');
 	}
-	//array_colecciones.push(nombre_coleccion_nueva);
 	console.log(array_colecciones);
 	$('.coleccion_nueva').droppable({
 			drop: function(evento, ui) {
-				$(this).append('<p id="alojamiento_coleccion" onclick="mostrar_mapa_coleccion('+ui.draggable.attr('numero')+','+j+')" numero='+ui.draggable.attr('numero')+'>'+ ui.draggable.text()+'</p>');
-                //alert("objeto con id="+ ui.draggable.text());
-
+				if($.inArray(ui.draggable.text(), array_nombres_alojamientos) === -1) {
+					$(this).append('<p id="alojamiento_coleccion" onclick="mostrar_mapa_coleccion('+ui.draggable.attr('numero')+','+j+')" numero='+ui.draggable.attr('numero')+'>'+ ui.draggable.text()+'</p>');
+					array_nombres_alojamientos.push(ui.draggable.text())
+					console.log(array_nombres_alojamientos);	
+				}
 			}
 	});
 }
@@ -392,6 +404,7 @@ var seleccionar_coleccion = function(identificador_coleccion, num_colecc){
 	console.log(identificador_coleccion + ' seleccionada.');
 	coleccion = [];
 	if( $('.coleccion_seleccionada').length > 0 )  {
+		//$('#'+identificador_coleccion+' > #nombre_coleccion_creada').removeClass('coleccion_seleccionada');
 		$('#nombre_coleccion_creada').removeClass('coleccion_seleccionada');
 	}
 	$('#'+identificador_coleccion+' #nombre_coleccion_creada').addClass('coleccion_seleccionada');
@@ -401,12 +414,13 @@ var seleccionar_coleccion = function(identificador_coleccion, num_colecc){
 		//console.log($(this).text());
 		if ($.inArray(identificador_coleccion, coleccion) === -1) {
 			coleccion.push(identificador_coleccion);
-			coleccion.push($(this).text());	
-			//contenido_fichero += contenido_fichero + coleccion;
+			if($.inArray($(this).text(), coleccion) === -1) {
+				coleccion.push($(this).text());		
+			}
 		}
-		else {
-			coleccion.push($(this).text());	
-		}
+		// else {
+		// 	coleccion.push($(this).text());	
+		// }
 		console.log(coleccion);
 		//ver_contenido_fichero();
 		// if($.inArray(coleccion, array_colecciones) === -1) {
@@ -416,12 +430,21 @@ var seleccionar_coleccion = function(identificador_coleccion, num_colecc){
 	})
 	var nombre_coleccion_seleccionada = $('.coleccion_seleccionada').text();
 	if( $('#coleccion_seleccionada').length > 0 )  {
-		$('#coleccion_seleccionada').append('<p>'+($('#nombre_coleccion_creada').siblings('#alojamiento_coleccion')).text()+'<br /></p>');
+		//$('#coleccion_seleccionada').append('<p>'+($('#nombre_coleccion_creada').siblings('#alojamiento_coleccion')).text()+'<br /></p>');
+		$('#coleccion_seleccionada').html('Coleccion seleccionada: ');
+		$('#coleccion_seleccionada').append('<p>'+nombre_coleccion_seleccionada+'</p>');
+		$('#coleccion_seleccionada > #alojamiento_coleccion').each(function() {
+			$('#coleccion_seleccionada').append('<p>'+$(this).text()+'</p>');
+		})
 	}
 	else {
 		$('#mapa').after('<div id="coleccion_seleccionada">Colección Seleccionada: <br />'+nombre_coleccion_seleccionada+'<div>');
-		$('#coleccion_seleccionada').append('<p>'+($('#nombre_coleccion_creada').siblings('#alojamiento_coleccion')).text()+'<br /></p>');
-		//CORREGIR PORQUE ALGO FALLA A LA HORA DE AÑADIR LOS HOTELES AL DIV
+		console.log('AQUI SE METE');
+		$('#coleccion_seleccionada').html('Coleccion seleccionada: ');
+		$('#coleccion_seleccionada').append('<p>'+nombre_coleccion_seleccionada+'</p>');
+		$('.coleccion_seleccionada').siblings('#alojamiento_coleccion').each(function() {
+			$('#coleccion_seleccionada').append('<p id="alojamientos_coleccion_seleccionada">'+$(this).text()+'</p>');
+		})
 	}
 }
 
@@ -578,7 +601,7 @@ var mostrar_alojamientos = function () {
 		console.log(id_alojamiento)
 	
 		L.marker([latitud,longitud]).addTo(mapa)
-			.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />')
+			.bindPopup('<a href="'+url_web+'" >' + nombre + '</a><br />')
 			.openPopup();
 
 		mapa.setView([latitud, longitud], 16);
@@ -619,11 +642,10 @@ var mostrar_alojamientos = function () {
 			$('button#coleccion').css({'display':'none'});
 		}
 		mostrar_alojamiento_seleccionado(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
-	
 }
 var leer_alojamientos = function () {
 
-	$.getJSON('alojamientos2.json', function (datos_alojamientos) {
+	$.getJSON('alojamientos.json', function (datos_alojamientos) {
 		$('#ver_alojamientos').html('');
 		alojamientos = datos_alojamientos.serviceList.service;
 		//$('#lista_alojamientos').after('<h1>' + alojamientos.length + '</h1>');
@@ -682,7 +704,7 @@ var buscar_alojamiento = function () {
 	console.log(array_busqueda);
 
 
-	$.getJSON('alojamientos2.json', function (datos_alojamientos) {
+	$.getJSON('alojamientos.json', function (datos_alojamientos) {
 
 		console.log('empieza a leer');
 		alojamientos = datos_alojamientos.serviceList.service;
@@ -700,8 +722,6 @@ var buscar_alojamiento = function () {
 			//alojamiento_leido.push(subcategoria_leida);
 			//console.log(alojamiento_leido);
 			if (nombre_buscado === '') {
-				
-				
 				
 				switch (valor_categoria) {
 					case '1':
@@ -743,7 +763,7 @@ var buscar_alojamiento = function () {
 							//lista_alojamientos_encontrados = lista_alojamientos_encontrados + '<li>' + nombre_leido + '</li>';
 						}
 						break;
-					case '2'://FALLA PORQUE HAY ALGUNOS QUE NO TIENEN SUBCATEGORIA Y NO ME FUNCIONA LA COMPROBACIÓN DEL "TYPEOF"
+					case '2':
 						if (categoria_leida ==='Hostales') {
 							subcategoria_leida = alojamientos[j].extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text'];
 							switch (valor_subcategoria) {
@@ -916,7 +936,8 @@ var expandir_formulario = function() {
     			}
     			else {
     				if(($('div#lista_alojamientos').children('ol')).length > 0 ) {
-						$('#seleccionar_subcategoria').after('<input id="botonBuscar" type="submit" value="Buscar" onclick="leer_formulario()" />');	
+    					console.log('Tiene que aparecer el boton de buscar');
+						$('#seleccion_categoria').after('<input id="botonBuscar" type="submit" value="Buscar" onclick="leer_formulario()" />');	
 					}
     				$("#buscar_nombre").remove();	
     				$('#botonBuscar').after('<input id="botonReset" type="reset" value="Vaciar Formulario" onclick="borrar_formulario()" />');
@@ -973,6 +994,7 @@ $(document).ready(function() {
 	array_coleccion = [];
 	array_colecciones = [];
 	coleccion = [];
+	array_nombres_alojamientos = [];
 	//fotos_alojamiento='<div id="fotos">';
 	//var contenido_fichero= '';
 	console.log('Lista_alojamientos: longitud = '+ $('#lista_alojamientos').length);
