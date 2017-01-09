@@ -230,7 +230,10 @@ var mostrar_alojamiento_seleccionado = function (latitud_selecc, longitud_selecc
 				imagen_selecc);
 			L.marker([latitud_selecc,longitud_selecc]).addTo(mapa_clientes_alojados)
 				.bindPopup('<a href="'+url_web_selecc+'">' + nombre_selecc + '</a><br />')
-				.openPopup();
+				.openPopup()
+				.on('click',function(){
+					alert("HOLA");
+				});
 
 			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);		
 		}	
@@ -434,15 +437,17 @@ var seleccionar_coleccion = function(identificador_coleccion, num_colecc){
 	var nombre_coleccion_seleccionada = $('.coleccion_seleccionada').text();
 	if( $('#coleccion_seleccionada').length > 0 )  {
 		//$('#coleccion_seleccionada').append('<p>'+($('#nombre_coleccion_creada').siblings('#alojamiento_coleccion')).text()+'<br /></p>');
+		$('#coleccion_seleccionada').html('');
 		$('#coleccion_seleccionada').html('Coleccion seleccionada: ');
 		$('#coleccion_seleccionada').append('<p>'+nombre_coleccion_seleccionada+'</p>');
-		$('#coleccion_seleccionada > #alojamiento_coleccion').each(function() {
-			$('#coleccion_seleccionada').append('<p>'+$(this).text()+'</p>');
+		$('.coleccion_seleccionada').siblings('#alojamiento_coleccion').each(function() {
+			//$('#coleccion_seleccionada').append('<p id="alojamientos_coleccion_seleccionada" onclick="mostrar_mapa_coleccion('+$(this).attr('numero')+')">'+$(this).text()+'</p>');
+			$('#coleccion_seleccionada').append('<p id="alojamientos_coleccion_seleccionada">'+$(this).text()+'</p>');
 		})
 	}
 	else {
 		$('#mapa').after('<div id="coleccion_seleccionada">Colección Seleccionada: <br />'+nombre_coleccion_seleccionada+'<div>');
-		console.log('AQUI SE METE');
+		//console.log('AQUI SE METE');
 		$('#coleccion_seleccionada').html('Coleccion seleccionada: ');
 		$('#coleccion_seleccionada').append('<p>'+nombre_coleccion_seleccionada+'</p>');
 		$('.coleccion_seleccionada').siblings('#alojamiento_coleccion').each(function() {
@@ -489,8 +494,7 @@ var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
 	var id_alojamiento = es_null(alojamiento['@id']);
 	console.log(id_alojamiento)
 	
-	// array_coleccion.push(id_alojamiento);
-	// console.log(array_coleccion);
+
 	if($.inArray(id_alojamiento, array_coleccion) === -1) {
 		array_coleccion.push(id_alojamiento);
 		console.log(array_coleccion);
@@ -499,42 +503,19 @@ var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
 		console.log('Ya está en la colección.');
 	}
 
+
+
 	L.marker([latitud,longitud]).addTo(mapa)
 		.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />')
-		.openPopup();
+		.openPopup()
+		.on('click', function() {
+			ver_info_mapa(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
+		});
 
 	mapa.setView([latitud, longitud], 16);
-	if ($('#descripcion').length > 0) {
-		$('#descripcion').remove()
-		$('#mapa').after('<div id="descripcion"></div>');
-	}
-	else {
-		$('#mapa').after('<div id="descripcion"></div>');	
-	}
-	
-	$('#descripcion').html('<h2 style = "text-decoration: underline; font-weight: bold;font-style: oblique;">' + nombre + '</h2>' + 
-		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Dirección: </p><p>' + direccion + '</p>' +
-		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Descripción: </p><p>' + descripcion + '</p>' +
-		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Categoria: </p><p>' + categoria + '</p>' +
-		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Subcategoría: </p><p>' + subcategoria + '</p>' +
-		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Teléfono: </p><p>' + telefono + '</p>' +
-		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Fax: </p><p>' + fax + '</p>' +
-		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Correo Electrónico: </p><p>' + email + '</p>' +
-		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Página Web: </p><a href="'+url_web+'">' + url_web + '</a>' +
-		fotos_alojamiento);
-	$('#lista_alojamientos').css({'display':'none'});
-	$('<button>', {
-			 	'type': 'button',
-			 	'id': 'cerrar',
-			 	html: 'Cerrar',
-			 	'onclick': 'cerrar_alojamiento()'
-	}).appendTo('#descripcion');
-	$('<button>', {
-			 	'type': 'button',
-			 	'id': 'coleccion',
-			 	html: 'Añadir Colección',
-			 	'onclick': 'add_coleccion('+id_alojamiento+')'
-	}).appendTo('#descripcion');
+	ver_info_mapa(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
+
+
 
 	if($('#mapa_coleccion').length >0) {
 		L.marker([latitud,longitud]).addTo(mapa_coleccion)
@@ -553,7 +534,7 @@ var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
 	 		maxZoom: 20
 		}).addTo(mapa_coleccion);
 		L.marker([latitud,longitud]).addTo(mapa_coleccion)
-			.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />Coleccion: '+nombre_coleccion)
+			.bindPopup('<a href="'+url_web+'">' + nombre + '</a>')
 			.openPopup();
 
 		mapa_coleccion.setView([latitud, longitud], 16);
@@ -581,79 +562,48 @@ var mostrar_fotos = function(path_multimedia) {
     return fotos_alojamiento;
 }
 var mostrar_alojamientos = function () {
-		var alojamiento = alojamientos[$(this).attr('numero')];
-		/*Cogemos sólo alguno de los datos que están en el json y los almacenamos en variables de nuestra aplicación*/
-		var latitud = es_null(alojamiento.geoData.latitude);
-		var longitud = es_null(alojamiento.geoData.longitude);
-		var direccion = es_null(alojamiento.geoData.address);
-		var descripcion = es_null(alojamiento.basicData.body);
-		var url_web = es_null(alojamiento.basicData.web);
-		var telefono = es_null(alojamiento.basicData.phone);
-		var nombre = es_null(alojamiento.basicData.name);
-		var email = es_null(alojamiento.basicData.email);
-		var fax = es_null(alojamiento.basicData.fax);
-		try {
-			var imagen = mostrar_fotos(alojamiento.multimedia);	
-		}catch(e) {
-			if ( e.message === 'alojamiento.multimedia is null') {
-	 			alert('No hay imágenes de este alojamiento')
-			}
+	var alojamiento = alojamientos[$(this).attr('numero')];
+	/*Cogemos sólo alguno de los datos que están en el json y los almacenamos en variables de nuestra aplicación*/
+	var latitud = es_null(alojamiento.geoData.latitude);
+	var longitud = es_null(alojamiento.geoData.longitude);
+	var direccion = es_null(alojamiento.geoData.address);
+	var descripcion = es_null(alojamiento.basicData.body);
+	var url_web = es_null(alojamiento.basicData.web);
+	var telefono = es_null(alojamiento.basicData.phone);
+	var nombre = es_null(alojamiento.basicData.name);
+	var email = es_null(alojamiento.basicData.email);
+	var fax = es_null(alojamiento.basicData.fax);
+	try {
+		var imagen = mostrar_fotos(alojamiento.multimedia);	
+	}catch(e) {
+		if ( e.message === 'alojamiento.multimedia is null') {
+ 			alert('No hay imágenes de este alojamiento')
 		}
-		var categoria = es_null(alojamiento.extradata.categorias.categoria.item[1]['#text']);
-		try{
-			var subcategoria = es_null(alojamiento.extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text']);	
-		}catch(e) {
-			//alert(e.message);
-			 if ( e.message === 'alojamiento.extradata.categorias.categoria.subcategorias is undefined') {
-	 	 		console.log('ERROR: No hay subcategoría');
-			}
+	}
+	var categoria = es_null(alojamiento.extradata.categorias.categoria.item[1]['#text']);
+	try{
+		var subcategoria = es_null(alojamiento.extradata.categorias.categoria.subcategorias.subcategoria.item[1]['#text']);	
+	}catch(e) {
+		//alert(e.message);
+		 if ( e.message === 'alojamiento.extradata.categorias.categoria.subcategorias is undefined') {
+ 	 		console.log('ERROR: No hay subcategoría');
 		}
-		var id_alojamiento = es_null(alojamiento['@id']);
-		console.log(id_alojamiento)
-	
-		L.marker([latitud,longitud]).addTo(mapa)
-			.bindPopup('<a href="'+url_web+'" >' + nombre + '</a><br />')
-			.openPopup();
+	}
+	var id_alojamiento = es_null(alojamiento['@id']);
+	console.log(id_alojamiento)
 
-		mapa.setView([latitud, longitud], 16);
-		$('#mapa').after('<div id="descripcion"></div>');
-		$('#descripcion').html('<h2 style = "text-decoration: underline; font-weight: bold;font-style: oblique;">'+nombre+'</h2>' +
-			'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Dirección:</p><p>' + direccion + '</p>' +
-			'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Descripción: </p><p>' + descripcion + '</p>' +
-			'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Categoria: </p><p>' + categoria + '</p>' +
-			'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Subcategoría: </p><p>' + subcategoria + '</p>' +
-			'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Teléfono: </p><p>' + telefono + '</p>' +
-			'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Fax: </p><p>' + fax + '</p>' +
-			'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Correo Electrónico: </p><p>' + email + '</p>' +
-			'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Página Web: </p><a href="'+url_web+'">' + url_web + '</a>' +
-			fotos_alojamiento);
-		$('#lista_alojamientos').css({'display':'none'});
-		$('<button>', {
-			'type': 'button',
-			'id': 'cerrar',
-			html: 'Cerrar',
-			'onclick': 'cerrar_alojamiento()'
-		}).appendTo('#descripcion');
-		if(array_colecciones.length > 0) {
-			$('<button>', {
-	 			'type': 'button',
-	 			'id': 'coleccion',
-	 			html: 'Añadir Colección',
-	 			'onclick': 'add_coleccion('+id_alojamiento+',"'+nombre+'",'+latitud+','+longitud+')'
-			}).appendTo('#descripcion');
-			$('button#coleccion').css({'display':'inline'});
-		}
-		else {
-			$('<button>', {
-	 			'type': 'button',
-	 			'id': 'coleccion',
-		 		html: 'Añadir Colección',
-	 			'onclick': 'add_coleccion('+id_alojamiento+',"'+nombre+'",'+latitud+','+longitud+')'
-			}).appendTo('#descripcion');
-			$('button#coleccion').css({'display':'none'});
-		}
-		mostrar_alojamiento_seleccionado(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
+
+
+
+	L.marker([latitud,longitud]).addTo(mapa)
+		.bindPopup('<a href="'+url_web+'" >' + nombre + '</a><br />')
+		.openPopup()
+		.on('click',function() {
+			ver_info_mapa(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
+		});
+	ver_info_mapa(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
 }
+
 var leer_alojamientos = function () {
 
 	$.getJSON('alojamientos.json', function (datos_alojamientos) {
@@ -676,8 +626,59 @@ var leer_alojamientos = function () {
 		$('ol li').click(mostrar_alojamientos);
 	})
 	$('#buscar_nombre').css({'display':'block'});
+	$('#borrar_nombre').css({'display':'block'});
 	$('#boton_ver_alojamientos').remove();
 };
+
+var ver_info_mapa = function(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax) {
+	
+
+	if ($('#descripcion').length > 0) {
+		$('#descripcion').remove()
+		$('#mapa').after('<div id="descripcion"></div>');
+	}
+	else {
+		$('#mapa').after('<div id="descripcion"></div>');	
+	}
+	
+	mapa.setView([latitud, longitud], 16);
+	$('#descripcion').html('<h2 style = "text-decoration: underline; font-weight: bold;font-style: oblique;">'+nombre+'</h2>' +
+		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Dirección:</p><p>' + direccion + '</p>' +
+		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Descripción: </p><p>' + descripcion + '</p>' +
+		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Categoria: </p><p>' + categoria + '</p>' +
+		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Subcategoría: </p><p>' + subcategoria + '</p>' +
+		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Teléfono: </p><p>' + telefono + '</p>' +
+		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Fax: </p><p>' + fax + '</p>' +
+		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Correo Electrónico: </p><p>' + email + '</p>' +
+		'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Página Web: </p><a href="'+url_web+'">' + url_web + '</a>' +
+		fotos_alojamiento);
+	$('#lista_alojamientos').css({'display':'none'});
+	$('<button>', {
+		'type': 'button',
+		'id': 'cerrar',
+		html: 'Cerrar',
+		'onclick': 'cerrar_alojamiento()'
+	}).appendTo('#descripcion');
+	if(array_colecciones.length > 0) {
+		$('<button>', {
+			'type': 'button',
+			'id': 'coleccion',
+			html: 'Añadir Colección',
+			'onclick': 'add_coleccion('+id_alojamiento+',"'+nombre+'",'+latitud+','+longitud+')'
+		}).appendTo('#descripcion');
+		$('button#coleccion').css({'display':'inline'});
+	}
+	else {
+		$('<button>', {
+			'type': 'button',
+			'id': 'coleccion',
+	 		html: 'Añadir Colección',
+			'onclick': 'add_coleccion('+id_alojamiento+',"'+nombre+'",'+latitud+','+longitud+')'
+		}).appendTo('#descripcion');
+		$('button#coleccion').css({'display':'none'});
+	}
+	mostrar_alojamiento_seleccionado(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
+}
 
 var cerrar_alojamiento = function () {
 	$('#descripcion').remove();
@@ -915,6 +916,7 @@ var expandir_formulario = function() {
 					$('#seleccionar_subcategoria').after('<input id="botonBuscar" type="submit" value="Buscar" onclick="leer_formulario()" />');	
 				}
 				$("#buscar_nombre").remove();
+				$('#borrar_nombre').remove();
 				$('#botonBuscar').after('<input id="botonReset" type="reset" value="Vaciar Formulario" onclick="borrar_formulario()" />');
 			}
 		}
@@ -933,6 +935,7 @@ var expandir_formulario = function() {
 					$('#seleccionar_subcategoria').after('<input id="botonBuscar" type="submit" value="Buscar" onclick="leer_formulario()" />');	
 				}
 				$("#buscar_nombre").remove();
+				$('#borrar_nombre').remove();
 				$('#botonBuscar').after('<input id="botonReset" type="reset" value="Vaciar Formulario" onclick="borrar_formulario()" />');
 			}
 		}
@@ -952,6 +955,7 @@ var expandir_formulario = function() {
 					$('#seleccionar_subcategoria').after('<input id="botonBuscar" type="submit" value="Buscar" onclick="leer_formulario()" />');	
 				}
 				$("#buscar_nombre").remove();
+				$('#borrar_nombre').remove();
 				$('#botonBuscar').after('<input id="botonReset" type="reset" value="Vaciar Formulario" onclick="borrar_formulario()" />');
 			}
 		}
@@ -968,7 +972,8 @@ var expandir_formulario = function() {
     					console.log('Tiene que aparecer el boton de buscar');
 						$('#seleccion_categoria').after('<input id="botonBuscar" type="submit" value="Buscar" onclick="leer_formulario()" />');	
 					}
-    				$("#buscar_nombre").remove();	
+    				$("#buscar_nombre").remove();
+    				$('#borrar_nombre').remove();	
     				$('#botonBuscar').after('<input id="botonReset" type="reset" value="Vaciar Formulario" onclick="borrar_formulario()" />');
     			}			
 			}
@@ -1042,6 +1047,7 @@ $(document).ready(function() {
 	$('#boton_ver_alojamientos').click(leer_alojamientos);
 	if(($('div#lista_alojamientos').children('ol')).length === 0 ) {
 		$('#buscar_nombre').css({'display':'none'});
+		$('#borrar_nombre').css({'display':'none'});
 	}
 
 	$('#ui-id-1').on('click', function() {
