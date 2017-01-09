@@ -167,8 +167,10 @@ var mostrar_alojamiento_seleccionado = function (latitud_selecc, longitud_selecc
 				 '<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Correo Electrónico: </p><p>' + email_selecc + '</p>' +
 				 '<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Página Web: </p><a href="'+url_web_selecc+'">' + url_web_selecc + '</a>' +
 				 imagen_selecc);
-			L.marker([latitud_selecc,longitud_selecc]).addTo(mapa_clientes_alojados)
-				.bindPopup('<a href="'+url_web_selecc+'">' + nombre_selecc + '</a><br />')
+			marcador_selecc = new L.marker([latitud_selecc,longitud_selecc])
+			mapa_clientes_alojados.addLayer(marcador_selecc);
+			marcador_selecc.addTo(mapa_clientes_alojados)
+				.bindPopup('<a href="'+url_web_selecc+'" >' + nombre_selecc + '</a><br /> <button type="button" onclick="eliminar_marcador(marcador_selecc)">Cerrar</button>')
 				.openPopup();
 
 			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);
@@ -184,8 +186,10 @@ var mostrar_alojamiento_seleccionado = function (latitud_selecc, longitud_selecc
 				'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Correo Electrónico: </p><p>' + email_selecc + '</p>' +
 				'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Página Web: </p><a href="'+url_web_selecc+'">' + url_web_selecc + '</a>' +
 				imagen_selecc);
-			L.marker([latitud_selecc,longitud_selecc]).addTo(mapa_clientes_alojados)
-				.bindPopup('<a href="'+url_web_selecc+'">' + nombre_selecc + '</a><br />')
+			marcador_selecc = new L.marker([latitud_selecc,longitud_selecc])
+			mapa_clientes_alojados.addLayer(marcador_selecc);
+			marcador_selecc.addTo(mapa_clientes_alojados)
+				.bindPopup('<a href="'+url_web_selecc+'" >' + nombre_selecc + '</a><br /> <button type="button" onclick="eliminar_marcador(marcador_selecc)">Cerrar</button>')
 				.openPopup();
 
 			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);		
@@ -211,8 +215,10 @@ var mostrar_alojamiento_seleccionado = function (latitud_selecc, longitud_selecc
 				'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Correo Electrónico: </p><p>' + email_selecc + '</p>' +
 				'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Página Web: </p><a href="'+url_web_selecc+'">' + url_web_selecc + '</a>' +
 				imagen_selecc);
-			L.marker([latitud_selecc,longitud_selecc]).addTo(mapa_clientes_alojados)
-				.bindPopup('<a href="'+url_web_selecc+'">' + nombre_selecc + '</a><br />')
+			marcador_selecc = new L.marker([latitud_selecc,longitud_selecc])
+			mapa_clientes_alojados.addLayer(marcador_selecc);
+			marcador_selecc.addTo(mapa_clientes_alojados)
+				.bindPopup('<a href="'+url_web_selecc+'" >' + nombre_selecc + '</a><br /> <button type="button" onclick="eliminar_marcador(marcador_selecc)">Cerrar</button>')
 				.openPopup();
 
 			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);		
@@ -228,12 +234,11 @@ var mostrar_alojamiento_seleccionado = function (latitud_selecc, longitud_selecc
 				'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Correo Electrónico: </p><p>' + email_selecc + '</p>' +
 				'<p style = "text-decoration: underline; font-weight: bold;font-style: oblique;">Página Web: </p><a href="'+url_web_selecc+'">' + url_web_selecc + '</a>' +
 				imagen_selecc);
-			L.marker([latitud_selecc,longitud_selecc]).addTo(mapa_clientes_alojados)
-				.bindPopup('<a href="'+url_web_selecc+'">' + nombre_selecc + '</a><br />')
-				.openPopup()
-				.on('click',function(){
-					alert("HOLA");
-				});
+			marcador_selecc = new L.marker([latitud_selecc,longitud_selecc])
+			mapa_clientes_alojados.addLayer(marcador_selecc);
+			marcador_selecc.addTo(mapa_clientes_alojados)
+				.bindPopup('<a href="'+url_web_selecc+'" >' + nombre_selecc + '</a><br /> <button type="button" onclick="eliminar_marcador(marcador_selecc)">Cerrar</button>')
+				.openPopup();
 
 			mapa_clientes_alojados.setView([latitud_selecc, longitud_selecc], 16);		
 		}	
@@ -338,9 +343,11 @@ var add_coleccion = function (id_alojamiento_recibido,nombre,lat_aloj, long_aloj
 	}
 	
 	if($('#mapa_coleccion').length >0) {
-		L.marker([lat_aloj,long_aloj]).addTo(mapa_coleccion)
-		.bindPopup('<a>' + nombre + '</a><br />')
-		.openPopup();
+		marcador_colec = new L.marker([lat_aloj,long_aloj])
+		mapa_coleccion.addLayer(marcador_colec);
+			marcador_colec.addTo(mapa_coleccion)
+				.bindPopup('<a>' + nombre + '</a><br /><button type="button" onclick="eliminar_marcador(marcador_selecc)">Cerrar</button>')
+				.openPopup();
 		mapa_coleccion.setView([lat_aloj,long_aloj], 16);
 	}
 	else {
@@ -353,9 +360,11 @@ var add_coleccion = function (id_alojamiento_recibido,nombre,lat_aloj, long_aloj
 		 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
 	 		maxZoom: 20
 		}).addTo(mapa_coleccion);
-		L.marker([lat_aloj,long_aloj]).addTo(mapa_coleccion)
-			.bindPopup('<a>' + nombre + '</a><br />')
-			.openPopup();
+		marcador_colec = new L.marker([lat_aloj,long_aloj])
+		mapa_coleccion.addLayer(marcador_colec);
+			marcador_colec.addTo(mapa_coleccion)
+				.bindPopup('<a>' + nombre + '</a><br /><button type="button" onclick="eliminar_marcador(marcador_selecc)">Cerrar</button>')
+				.openPopup();
 
 		mapa_coleccion.setView([lat_aloj,long_aloj], 16);
 	}	
@@ -503,13 +512,14 @@ var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
 		console.log('Ya está en la colección.');
 	}
 
-
-
-	L.marker([latitud,longitud]).addTo(mapa)
-		.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />')
+	marcador = new L.marker([latitud,longitud])
+	mapa.addLayer(marcador);
+	marcador.addTo(mapa)
+		.bindPopup('<a href="'+url_web+'" >' + nombre + '</a><br /> <button type="button" onclick="eliminar_marcador(marcador)">Cerrar</button>')
 		.openPopup()
-		.on('click', function() {
+		.on('click',function() {
 			ver_info_mapa(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
+			
 		});
 
 	mapa.setView([latitud, longitud], 16);
@@ -518,9 +528,11 @@ var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
 
 
 	if($('#mapa_coleccion').length >0) {
-		L.marker([latitud,longitud]).addTo(mapa_coleccion)
-		.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />')
-		.openPopup();
+		marcador = new L.marker([latitud,longitud])
+		mapa_coleccion.addLayer(marcador);
+		marcador.addTo(mapa_coleccion)
+			.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />')
+			.openPopup();
 		mapa_coleccion.setView([latitud, longitud], 16);
 	}
 	else {
@@ -533,8 +545,10 @@ var mostrar_mapa_coleccion = function(numero_alojamiento,numero_coleccion) {
 		 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
 	 		maxZoom: 20
 		}).addTo(mapa_coleccion);
-		L.marker([latitud,longitud]).addTo(mapa_coleccion)
-			.bindPopup('<a href="'+url_web+'">' + nombre + '</a>')
+		marcador = new L.marker([latitud,longitud])
+		mapa_coleccion.addLayer(marcador);
+		marcador.addTo(mapa_coleccion)
+			.bindPopup('<a href="'+url_web+'">' + nombre + '</a><br />')
 			.openPopup();
 
 		mapa_coleccion.setView([latitud, longitud], 16);
@@ -595,15 +609,20 @@ var mostrar_alojamientos = function () {
 
 
 
-	L.marker([latitud,longitud]).addTo(mapa)
-		.bindPopup('<a href="'+url_web+'" >' + nombre + '</a><br />')
+	marcador = new L.marker([latitud,longitud])
+	mapa.addLayer(marcador);
+	marcador.addTo(mapa)
+		.bindPopup('<a href="'+url_web+'" >' + nombre + '</a><br /> <button type="button" onclick="eliminar_marcador(marcador)">Cerrar</button>')
 		.openPopup()
 		.on('click',function() {
 			ver_info_mapa(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
+			
 		});
 	ver_info_mapa(latitud, longitud, direccion, descripcion, url_web, nombre, imagen, categoria, subcategoria, id_alojamiento, telefono, email, fax);
 }
-
+ var eliminar_marcador = function (marcador) {
+	mapa.removeLayer(marcador)
+}
 var leer_alojamientos = function () {
 
 	$.getJSON('alojamientos.json', function (datos_alojamientos) {
