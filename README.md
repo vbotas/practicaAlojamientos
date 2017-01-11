@@ -1,9 +1,9 @@
 ##MEJORAS
   - Los formularios de carga y guardado, serán "pop-up" y mostrarán una alerta cuando se haya conseguido cargar o guardar un fichero según lo que se realice.
   - Formulario de búsqueda en la pestaña "principal" con las opciones de :
-      . Búsqueda por nombre,
-      . Búsqueda por categoría (hoteles, hostales...)
-      . Búsqueda por subcategoría con un formulario dinámico, en función de la categoría seleccionada.
+      - Búsqueda por nombre,
+      - Búsqueda por categoría (hoteles, hostales...)
+      - Búsqueda por subcategoría con un formulario dinámico, en función de la categoría seleccionada.
   Los resultados de la búsqueda aparecerán en una nueva zona, y todos los elementos de esa zona mostrarán la información del alojamiento cuando son clickados.
 
 
