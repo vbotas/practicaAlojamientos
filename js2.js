@@ -47,7 +47,7 @@ var guardar = function () {
 	var token = $('#token').val();
 	var repo = $('#repo').val();
 	var nombre_fichero = $('#nombre_fichero').val();
-	var usu = 'vbotas';
+	var usu = $('#usu').val();
 	console.log(token);
 	console.log(repo);
 	console.log(nombre_fichero);
@@ -74,7 +74,7 @@ var guardar = function () {
 
 var cargar = function() {
 	//console.log('HAS CLICKADO CARGAR')
-	var usu_cargar = 'vbotas';
+	var usu_cargar = $('#usu_carga').val();;
 	var repo_cargar = $('#repo_carga').val();
 	var nombre_fichero_cargar = $('#nombre_fichero_carga').val();
 	var token_cargar = $('#token_carga').val();
